@@ -1,0 +1,50 @@
+@startuml
+!theme plain
+actor User
+participant Browser
+participant FastAPI
+participant "Desktop App" as App
+participant "Pose\nDetector" as PD
+database DBs
+
+== 1. LOGIN & LAUNCH ==
+
+User -> Browser: Open site & login
+Browser -> FastAPI: POST /api/auth/login
+FastAPI --> Browser: OK + username
+User -> Browser: Click "Start Exercise"
+FastAPI -> App: subprocess launch
+App -> App: Tkinter GUI opens
+
+== 2. EXERCISE SESSION ==
+
+App -> PD: Init poseDetector
+loop Every frame
+  App -> PD: findPose() + findPosition()
+  PD --> App: Landmarks & angles
+  App -> App: Smooth angles + exercise logic\n(rep count, form check, overlay)
+end
+User -> App: Press 'q' to stop
+
+== 3. SAVE & CALCULATE ==
+
+App -> DBs: Save exercise log (spor_db)
+App -> DBs: Fetch user weight (user_db)
+App -> App: MET-based calorie burn + BMR
+App -> DBs: Save to calorie_db
+App -> User: Show result (reps + kcal)
+
+== 4. AI COACH (OPTIONAL) ==
+
+User -> App: Open AI Coach
+App -> DBs: Collect profile + all logs
+App -> App: Generate rule-based report
+App -> User: Show report
+User -> App: Chat with Coach (via Ollama)
+App -> DBs: Collect live data
+App -> FastAPI: POST /api/ai-coach/chat
+FastAPI -> FastAPI: Ollama LLM call
+FastAPI --> App: Coach response
+App -> User: Show chat reply
+
+@enduml

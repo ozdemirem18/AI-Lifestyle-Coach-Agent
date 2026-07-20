@@ -1,0 +1,85 @@
+@startuml
+!theme plain
+skinparam classAttributeIconSize 0
+
+package "Pose Detection" {
+  class poseDetector { findPose / findPosition / finfAngle }
+}
+
+package "Exercise App" {
+  class ExerciseTracker { angle smooth + stability check }
+  class ExerciseFunctions {
+    push_up / squat / plank / sit_up
+    march / arm_raise / jump
+  }
+  class CameraApp { Tkinter GUI + camera loop }
+  CameraApp *-- poseDetector
+  CameraApp *-- ExerciseTracker
+  CameraApp --> ExerciseFunctions
+}
+
+package "Trackers" {
+  class UserManager { register / login / profile / BMI }
+  class SporCalorie { MET kcal + BMR }
+  class CalorieTracker { food lookup }
+  class SleepTracker { log hours }
+  class WaterTracker { log ml }
+  class StepTracker { log steps }
+}
+
+package "AI Coach" {
+  class DataCollector { reads all user DBs }
+  class ReportGenerator { rule-based advice }
+  class OllamaClient { llama3.2 }
+}
+
+package "Web API" {
+  class FastAPI { REST endpoints for all }
+  class WebFrontend { index.html SPA }
+}
+
+FastAPI --> UserManager
+FastAPI --> SporCalorie
+FastAPI --> CalorieTracker
+FastAPI --> SleepTracker
+FastAPI --> WaterTracker
+FastAPI --> StepTracker
+FastAPI --> DataCollector
+FastAPI --> OllamaClient
+FastAPI --> ReportGenerator
+FastAPI --> WebFrontend : serves /
+
+CameraApp --> SporCalorie : calorie burn
+CameraApp --> DataCollector : AI Coach button
+
+database "user_db" as U
+database "spor_db" as S
+database "calorie_db" as C
+database "sleep_db" as SL
+database "water_db" as W
+database "step_db" as ST
+database "coach_db" as CO
+
+DataCollector --> U
+DataCollector --> S
+DataCollector --> C
+DataCollector --> SL
+DataCollector --> W
+DataCollector --> ST
+FastAPI --> U
+FastAPI --> S
+FastAPI --> C
+FastAPI --> SL
+FastAPI --> W
+FastAPI --> ST
+FastAPI --> CO
+SporCalorie --> U
+SporCalorie --> S
+CameraApp --> S
+UserManager --> U
+CalorieTracker --> C
+SleepTracker --> SL
+WaterTracker --> W
+StepTracker --> ST
+
+@enduml

@@ -1,0 +1,3289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Fitness Trainer — Your AI-Powered Workout Companion</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%234f46e5'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='2' y='2' width='28' height='28' rx='7' fill='url(%23g)'/%3E%3Cg transform='translate(4, 4)' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z'/%3E%3C/g%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <style>
+    /* ============================================================
+       APPLE DESIGN SYSTEM — AI Fitness Trainer
+       Based on Apple DESIGN.md from awesome-design-md
+       ============================================================ */
+
+    /* --- Reset & Base --- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 400;
+      font-size: 17px;
+      line-height: 1.47;
+      letter-spacing: -0.374px;
+      color: #1d1d1f;
+      background: #ffffff;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: #0066cc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* --- Typography Tokens --- */
+    .hero-display {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 56px;
+      font-weight: 600;
+      line-height: 1.07;
+      letter-spacing: -0.28px;
+    }
+    .display-lg {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 40px;
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+    .display-md {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 34px;
+      font-weight: 600;
+      line-height: 1.47;
+      letter-spacing: -0.374px;
+    }
+    .lead {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1.14;
+      letter-spacing: 0.196px;
+    }
+    .lead-airy {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 24px;
+      font-weight: 300;
+      line-height: 1.5;
+      letter-spacing: 0;
+    }
+    .tagline {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 21px;
+      font-weight: 700;
+      line-height: 1.19;
+      letter-spacing: 0.231px;
+    }
+    .body-strong {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.24;
+      letter-spacing: -0.374px;
+    }
+    .body { font-size: 17px; font-weight: 400; line-height: 1.47; letter-spacing: -0.374px; }
+    .caption { font-size: 14px; font-weight: 400; line-height: 1.43; letter-spacing: -0.224px; }
+    .caption-strong { font-size: 14px; font-weight: 600; line-height: 1.29; letter-spacing: -0.224px; }
+    .fine-print { font-size: 12px; font-weight: 400; line-height: 1.0; letter-spacing: -0.12px; }
+    .nav-link { font-size: 12px; font-weight: 400; line-height: 1.0; letter-spacing: -0.12px; }
+
+    /* --- Color Utilities --- */
+    .text-primary { color: #0066cc; }
+    .text-primary-on-dark { color: #2997ff; }
+    .text-ink { color: #1d1d1f; }
+    .text-on-dark { color: #ffffff; }
+    .text-muted { color: #7a7a7a; }
+    .text-muted-on-dark { color: #cccccc; }
+
+    .bg-canvas { background: #ffffff; }
+    .bg-parchment { background: #f5f5f7; }
+    .bg-dark { background: #272729; }
+    .bg-dark-2 { background: #2a2a2c; }
+    .bg-dark-3 { background: #252527; }
+    .bg-black { background: #000000; }
+
+    /* --- Layout --- */
+    .container {
+      max-width: 1068px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .container-wide {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* --- Global Nav --- */
+    .global-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: #000000;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+    }
+    .global-nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1068px;
+      width: 100%;
+    }
+    .global-nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: -0.12px;
+      text-decoration: none;
+    }
+    .global-nav-logo svg { display: block; flex-shrink: 0; }
+    .nav-brand { font-size: 13px; font-weight: 500; letter-spacing: -0.15px; }
+    .nav-ai { font-weight: 700; background: linear-gradient(135deg, #a78bfa, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -0.5px; }
+    .nav-brand-light { font-weight: 300; opacity: 0.65; }
+    .global-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+    .global-nav-links a {
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: -0.12px;
+      text-decoration: none;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+    .global-nav-links a:hover { opacity: 1; text-decoration: none; }
+    .global-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .nav-hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+    .nav-hamburger span {
+      display: block; width: 18px; height: 1px;
+      background: #fff; margin: 4px 0; border-radius: 1px;
+    }
+
+
+    /* --- Buttons --- */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #0066cc;
+      color: #ffffff;
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.0;
+      letter-spacing: -0.374px;
+      padding: 11px 22px;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-primary:hover { background: #0071e3; text-decoration: none; transform: scale(0.95); }
+    .btn-primary:active { transform: scale(0.95); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: transparent;
+      color: #0066cc;
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.0;
+      letter-spacing: -0.374px;
+      padding: 11px 22px;
+      border-radius: 9999px;
+      border: 1px solid #0066cc;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-secondary:hover { background: rgba(0, 102, 204, 0.05); text-decoration: none; transform: scale(0.95); }
+
+    .btn-dark-utility {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #1d1d1f;
+      color: #ffffff;
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.29;
+      letter-spacing: -0.224px;
+      padding: 8px 15px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-dark-utility:hover { text-decoration: none; }
+    .user-info { display: flex; align-items: center; gap: 12px; }
+    .user-greeting { color: #ffffff; font-size: 14px; font-weight: 400; letter-spacing: -0.224px; white-space: nowrap; }
+    .btn-quit { background: #555; }
+    /* --- Floating AI Coach Button (bottom-right) --- */
+    .aicoach-fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(79,70,229,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .aicoach-fab:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 28px rgba(79,70,229,0.6);
+      background: linear-gradient(135deg, #5b52f0, #8b5cf6);
+    }
+    .aicoach-fab:active { transform: scale(0.95); }
+    .aicoach-fab svg { display: block; }
+    /* --- Floating Music Player (expanding on hover) --- */
+    .music-player {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: rgba(29,29,31,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 24px;
+      padding: 8px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .music-player:hover {
+      width: 160px;
+      height: 48px;
+      border-radius: 24px;
+      padding: 8px 12px;
+      gap: 10px;
+      cursor: default;
+    }
+    .music-player .mp-icon {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #888;
+      transition: color 0.2s;
+    }
+    .music-player:hover .mp-icon { color: #fff; }
+    .music-player .mp-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      transition: opacity 0.25s ease 0.1s;
+      white-space: nowrap;
+    }
+    .music-player:hover .mp-controls { opacity: 1; }
+    .music-player .mp-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: none;
+      background: #0066cc;
+      color: #fff;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      flex-shrink: 0;
+    }
+    .music-player .mp-btn:hover { background: #0071e3; }
+    .music-player .mp-btn:active { transform: scale(0.9); }
+    .music-player .mp-btn.playing { background: #30b94c; }
+    .music-player input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 60px;
+      height: 3px;
+      border-radius: 2px;
+      background: #555;
+      outline: none;
+      cursor: pointer;
+    }
+    .music-player input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #fff;
+      cursor: pointer;
+      border: none;
+    }
+    .music-player input[type="range"]::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #fff;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-store-hero {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #0066cc;
+      color: #ffffff;
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 18px;
+      font-weight: 300;
+      line-height: 1.0;
+      letter-spacing: 0;
+      padding: 14px 28px;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-store-hero:hover { background: #0071e3; text-decoration: none; transform: scale(0.95); }
+
+    /* --- Tiles --- */
+    .tile {
+      padding: 80px 0;
+      text-align: center;
+    }
+    .tile-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .tile-title { margin-bottom: 8px; }
+    .tile-subtitle { margin-bottom: 16px; }
+    .tile-body { margin-bottom: 24px; max-width: 680px; margin-left: auto; margin-right: auto; }
+    .tile-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    /* --- Hero Tile --- */
+    .hero-tile {
+      padding: 140px 0 100px;
+      text-align: center;
+      background: #ffffff;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: #7a7a7a;
+      margin-bottom: 24px;
+      letter-spacing: -0.224px;
+    }
+    .hero-badge .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #0066cc;
+      display: inline-block;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    @keyframes spin-cw { to { transform: rotate(360deg); } }
+    @keyframes spin-ccw { to { transform: rotate(-360deg); } }
+    @keyframes hero-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes sparkle-pop { 0%, 100% { opacity: 0; transform: scale(0); } 50% { opacity: 0.9; transform: scale(1.2); } }
+    @keyframes badge-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(79,70,229,0.4); } 50% { box-shadow: 0 0 0 15px rgba(79,70,229,0); } }
+    .hero-logo-wrap { display: inline-flex; position: relative; animation: hero-float 4s ease-in-out infinite; }
+    .hero-ring-outer { transform-origin: 50px 50px; animation: spin-cw 25s linear infinite; }
+    .hero-ring-inner { transform-origin: 50px 50px; animation: spin-ccw 18s linear infinite; }
+    .hero-sparkle { animation: sparkle-pop 2.5s ease-in-out infinite; }
+    .hero-sparkle:nth-child(2) { animation-delay: 1.2s; }
+
+    /* --- Feature Grid --- */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .feature-card {
+      background: rgba(255,255,255,0.06);
+      border-radius: 18px;
+      padding: 32px 24px;
+      text-align: left;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+    .feature-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.1); }
+    .feature-card-icon {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      background: rgba(0,102,204,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    .feature-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.24;
+      letter-spacing: -0.374px;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.43;
+      letter-spacing: -0.224px;
+      color: #cccccc;
+    }
+
+    /* --- Step Grid (How It Works) --- */
+    .step-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .step-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 32px 20px;
+      text-align: left;
+      border: 1px solid #e0e0e0;
+    }
+    .step-number {
+      font-size: 34px;
+      font-weight: 600;
+      line-height: 1.47;
+      letter-spacing: -0.374px;
+      color: #0066cc;
+      margin-bottom: 12px;
+    }
+    .step-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.24;
+      letter-spacing: -0.374px;
+      color: #1d1d1f;
+      margin-bottom: 6px;
+    }
+    .step-card p {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.43;
+      letter-spacing: -0.224px;
+      color: #7a7a7a;
+    }
+
+    /* --- Exercise Cards --- */
+    .exercise-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .exercise-card {
+      background: rgba(255,255,255,0.06);
+      border-radius: 18px;
+      overflow: hidden;
+      text-align: left;
+      transition: transform 0.3s ease;
+    }
+    .exercise-card:hover { transform: translateY(-3px); }
+    .exercise-card-header {
+      padding: 28px 24px 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .exercise-card-header .ex-icon {
+      width: 44px; height: 44px;
+      border-radius: 9999px;
+      background: rgba(0,102,204,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .exercise-card-header h3 {
+      font-size: 21px;
+      font-weight: 700;
+      line-height: 1.19;
+      letter-spacing: 0.231px;
+      color: #ffffff;
+    }
+    .exercise-card-body {
+      padding: 0 24px 24px;
+    }
+    .exercise-card-body p {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.43;
+      letter-spacing: -0.224px;
+      color: #cccccc;
+      margin-bottom: 12px;
+    }
+    .exercise-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .exercise-stat span {
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.3;
+      letter-spacing: -0.08px;
+      color: #999;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .exercise-stat strong {
+      color: #2997ff;
+      font-weight: 600;
+    }
+    .exercise-db-stat {
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #30b94c;
+    }
+    .exercise-weekly {
+      padding: 12px 16px 10px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .exercise-weekly .ew-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .ew-today {
+      text-align: center;
+      flex-shrink: 0;
+      min-width: 52px;
+    }
+    .ew-today-value {
+      display: block;
+      font-size: 22px;
+      font-weight: 700;
+      color: #2997ff;
+      line-height: 1.1;
+    }
+    .ew-today-label {
+      display: block;
+      font-size: 8px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 1px;
+    }
+    .ew-total {
+      text-align: center;
+      flex-shrink: 0;
+      min-width: 52px;
+    }
+    .ew-total-value {
+      display: block;
+      font-size: 16px;
+      font-weight: 600;
+      color: #f5f5f7;
+      line-height: 1.1;
+    }
+    .ew-total-label {
+      display: block;
+      font-size: 8px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 1px;
+    }
+    .exercise-weekly .ew-chart-wrap {
+      height: 60px;
+      position: relative;
+      flex: 1;
+      min-width: 0;
+    }
+    .exercise-weekly .ew-chart-wrap canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+      max-width: 100%;
+    }
+
+    @media (max-width: 735px) {
+      .exercise-weekly { padding: 10px 12px 8px; }
+      .exercise-weekly .ew-chart-wrap { height: 48px; }
+      .ew-today-value { font-size: 18px; }
+      .ew-total-value { font-size: 14px; }
+    }
+
+    /* --- Tracker Grid --- */
+    .tracker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .tracker-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 28px 24px;
+      text-align: left;
+      border: 1px solid #e0e0e0;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .tracker-card:hover {
+      transform: translateY(-3px);
+      box-shadow: rgba(0,0,0,0.08) 0 4px 20px;
+    }
+    .tracker-card-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+    .tracker-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.24;
+      letter-spacing: -0.374px;
+      color: #1d1d1f;
+      margin-bottom: 6px;
+    }
+    .tracker-card p {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.43;
+      letter-spacing: -0.224px;
+      color: #7a7a7a;
+    }
+    .tracker-card {
+      cursor: pointer;
+    }
+    .tracker-today {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #e8e8ed;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .tracker-today-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0066cc;
+    }
+    .tracker-today-value .unit {
+      font-size: 13px;
+      font-weight: 400;
+      color: #7a7a7a;
+      margin-left: 2px;
+    }
+    .tracker-today-label {
+      font-size: 12px;
+      font-weight: 400;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .tracker-today.empty .tracker-today-value {
+      color: #bbb;
+      font-weight: 400;
+    }
+
+    /* --- Step Quick-Add --- */
+    .step-quick-add {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .step-add-btn {
+      background: #2ecc71;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      width: 36px;
+      height: 36px;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .step-add-btn:hover {
+      background: #27ae60;
+    }
+
+    /* --- Calorie Summary --- */
+    .calorie-summary-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 28px 24px;
+      border: 1px solid #e0e0e0;
+    }
+    .cal-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .cal-metric {
+      text-align: center;
+      padding: 16px 8px;
+      border-radius: 12px;
+    }
+    .cal-in { background: #fff5f0; }
+    .cal-out { background: #f0f7ff; }
+    .cal-net { background: #f0faf0; }
+    .cal-breakdown {
+      background: #f8f8fa;
+      padding: 12px 8px;
+    }
+    .cal-metric-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #888;
+      margin-bottom: 4px;
+    }
+    .cal-metric-value {
+      display: block;
+      font-size: 28px;
+      font-weight: 700;
+      color: #1d1d1f;
+    }
+    .cal-metric-unit {
+      display: block;
+      font-size: 12px;
+      color: #999;
+      margin-top: 2px;
+    }
+    .cal-net .cal-metric-value {
+      color: #2ecc71;
+    }
+    .cal-net .cal-metric-value.negative {
+      color: #ff5f5f;
+    }
+
+
+    /* --- Tech Section --- */
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 36px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .tech-chip {
+      background: rgba(255,255,255,0.08);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 400;
+      padding: 8px 18px;
+      border-radius: 9999px;
+      letter-spacing: -0.12px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* --- Stats Section --- */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 40px;
+      font-weight: 600;
+      line-height: 1.1;
+      color: #0066cc;
+    }
+    .stat-label {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.43;
+      color: #7a7a7a;
+      margin-top: 4px;
+    }
+
+    /* --- CTA Tile --- */
+    .cta-tile {
+      padding: 100px 0;
+      text-align: center;
+    }
+
+    /* --- Footer --- */
+    .site-footer {
+      background: #f5f5f7;
+      padding: 64px 0 32px;
+      color: #7a7a7a;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.0;
+      letter-spacing: -0.12px;
+    }
+    .footer-inner {
+      max-width: 1068px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    .footer-col h4 {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.29;
+      letter-spacing: -0.224px;
+      color: #1d1d1f;
+      margin-bottom: 12px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 6px; }
+    .footer-col ul li a {
+      color: #7a7a7a;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: -0.12px;
+      text-decoration: none;
+      line-height: 1.4;
+      display: block;
+    }
+    .footer-col ul li a:hover { color: #1d1d1f; text-decoration: underline; }
+    .footer-legal {
+      border-top: 1px solid #e0e0e0;
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 12px;
+      color: #999;
+    }
+
+    /* --- Animations --- */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* --- Calendar --- */
+    .cal-container {
+      max-width: 480px;
+      margin: 40px auto 0;
+      background: #1d1d1f;
+      border-radius: 16px;
+      border: 1px solid #333;
+      padding: 28px 24px 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    .cal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding: 0 4px;
+    }
+    .cal-month-year {
+      font-size: 20px;
+      font-weight: 600;
+      color: #f5f5f7;
+      letter-spacing: 0.3px;
+    }
+    .cal-nav-btn {
+      background: none;
+      border: none;
+      color: #888;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .cal-nav-btn:hover { background: #333; color: #fff; }
+    .cal-nav-btn:active { background: #444; }
+    .cal-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0;
+      margin-bottom: 4px;
+    }
+    .cal-weekdays span {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 500;
+      color: #777;
+      padding: 0 0 10px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+    }
+    .cal-day {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #e0e0e0;
+      background: transparent;
+      position: relative;
+      min-height: 40px;
+      transition: background 0.15s;
+    }
+    .cal-day:not(.other-month):hover { background: #2a2a2c; }
+    .cal-day.other-month { color: #444; }
+    .cal-day.today {
+      border: 1.5px solid #555;
+      font-weight: 600;
+    }
+    .cal-day .cal-day-indicator {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      margin-top: 2px;
+      box-shadow: 0 0 4px rgba(0,0,0,0.3);
+    }
+    .cal-day .cal-day-indicator.green { background: #30d158; }
+    .cal-day .cal-day-indicator.blue { background: #5e9eff; }
+    .cal-day .cal-day-indicator.orange { background: #ff9f0a; }
+    .cal-legend {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      padding-top: 16px;
+      border-top: 1px solid #2a2a2c;
+    }
+    .cal-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #999;
+    }
+    .cal-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .cal-dot-green { background: #30d158; }
+    .cal-dot-blue { background: #5e9eff; }
+    .cal-dot-orange { background: #ff9f0a; }    /* --- Responsive: Tablet Landscape (834–1023px) --- */
+    @media (max-width: 1023px) {
+      .feature-grid { grid-template-columns: repeat(2, 1fr); }
+      .tracker-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-row { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+    }
+
+    /* --- Responsive: Tablet Portrait (736–833px) --- */
+    @media (max-width: 833px) {
+      .global-nav-links { display: none; }
+      .nav-hamburger { display: block; }
+
+      .hero-display { font-size: 40px; }
+      .display-lg { font-size: 34px; }
+      .display-md { font-size: 28px; }
+      .lead { font-size: 24px; }
+      .tile { padding: 60px 0; }
+      .hero-tile { padding: 100px 0 70px; }
+
+      .step-grid { grid-template-columns: repeat(2, 1fr); }
+      .exercise-grid { grid-template-columns: 1fr; }
+      .footer-links { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* --- Responsive: Phone (420–640px) --- */
+    @media (max-width: 735px) {
+      .hero-display { font-size: 34px; }
+      .display-lg { font-size: 28px; }
+      .lead { font-size: 21px; line-height: 1.19; }
+      .hero-tile { padding: 80px 0 50px; }
+      .tile { padding: 48px 0; }
+
+      .feature-grid { grid-template-columns: 1fr; }
+      .step-grid { grid-template-columns: 1fr; }
+      .tracker-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+      .stat-number { font-size: 34px; }
+
+      .footer-links { grid-template-columns: 1fr; }
+      .footer-legal { flex-direction: column; text-align: center; }
+    }
+
+    /* --- Responsive: Small Phone (≤419px) --- */
+    @media (max-width: 419px) {
+      .hero-display { font-size: 28px; letter-spacing: -0.12px; }
+      .display-lg { font-size: 24px; letter-spacing: 0; }
+      .container { padding: 0 16px; }
+      .tile-actions { flex-direction: column; align-items: center; }
+      .stats-row { grid-template-columns: 1fr; gap: 20px; }
+    }
+
+    /* --- Modal --- */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 40px 32px 32px;
+      max-width: 440px;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      animation: modal-in 0.3s ease;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    @keyframes modal-in {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .modal-close:hover { background: #e8e8ed; }
+
+    /* --- Form Elements --- */
+    .form-group { margin-bottom: 16px; }
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.29;
+      letter-spacing: -0.224px;
+      color: #1d1d1f;
+      margin-bottom: 6px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.24;
+      letter-spacing: -0.374px;
+      color: #1d1d1f;
+      background: #f5f5f7;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      box-sizing: border-box;
+    }
+    .form-input:focus {
+      border-color: #0066cc;
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(0,102,204,0.15);
+    }
+    .form-input::placeholder { color: #7a7a7a; }
+    .form-error {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.43;
+      letter-spacing: -0.224px;
+      color: #ff3b30;
+      margin-bottom: 12px;
+      min-height: 0;
+      display: none;
+    }
+    .form-error.visible { display: block; }
+
+    /* --- Password Rules --- */
+    .password-rules {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 12px;
+      margin-bottom: 16px;
+    }
+    .rule {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: -0.12px;
+      color: #7a7a7a;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .rule::before {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #e0e0e0;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .rule.met { color: #30b94c; }
+    .rule.met::before { background: #30b94c; }
+
+    /* --- Spinner --- */
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      display: inline-block;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* --- Profile Modal --- */
+    .profile-result { font-size: 14px; font-weight: 600; color: #0066cc; margin: 8px 0; min-height: 20px; }
+    .profile-result-row { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 12px; }
+    .profile-result-item { font-size: 14px; color: #1d1d1f; }
+    .profile-result-item strong { color: #0066cc; }
+
+    /* --- Toast --- */
+    .toast {
+      position: fixed;
+      bottom: 32px; left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #1d1d1f;
+      color: #ffffff;
+      padding: 14px 28px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: -0.224px;
+      z-index: 2000;
+      opacity: 0;
+      transition: all 0.4s ease;
+      pointer-events: none;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .toast.error { background: #ff3b30; }
+    .toast.success { background: #30b94c; }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       GLOBAL NAV
+       ============================================================ -->
+  <audio id="bg-music" src="/static/webmusic.mp3"></audio>
+  <nav class="global-nav">
+    <div class="global-nav-inner">
+      <a href="#" class="global-nav-logo">
+        <!-- Tabler AI icon (MIT License) https://tabler.io/icons -->
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+          <defs>
+            <linearGradient id="navGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#4f46e5"/>
+              <stop offset="100%" stop-color="#7c3aed"/>
+            </linearGradient>
+          </defs>
+          <rect x="1" y="1" width="28" height="28" rx="7" fill="url(#navGrad)"/>
+          <rect x="1.5" y="1.5" width="27" height="27" rx="6.5" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+          <g transform="translate(3, 3)" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+          </g>
+          <circle cx="24" cy="7" r="1.2" fill="#a78bfa"/>
+        </svg>
+        <span class="nav-brand"><span class="nav-ai">AI</span> <span class="nav-brand-light">Fitness</span> Trainer</span>
+      </a>
+      <ul class="global-nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#exercises">Exercises</a></li>
+        <li><a href="#trackers">Trackers</a></li>
+        <li><a href="#calendar-section">Calendar</a></li>
+        <li><a href="#tech">Technology</a></li>
+      </ul>
+      <div class="global-nav-actions">
+        <button class="btn-dark-utility" id="btn-signin" onclick="openModal('signin')">Sign In</button>
+        <button class="btn-dark-utility" id="btn-signup" onclick="openModal('signup')">Sign Up</button>
+        <div class="user-info" id="user-info" style="display:none;">
+          <span class="user-greeting" id="user-greeting" style="cursor:pointer;" onclick="openProfileModal()"></span>
+          <button class="btn-dark-utility btn-quit" onclick="handleSignOut()">Quit</button>
+        </div>
+        <button class="nav-hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- ============================================================
+       HERO — Light Tile
+       ============================================================ -->
+  <section class="hero-tile" id="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Powered by Computer Vision &bull; Real-Time Pose Detection
+      </div>
+      <div class="hero-logo-wrap" style="margin-bottom: 20px;">
+        <!-- Lucide sparkle icon (ISC License) https://github.com/lucide-icons/lucide -->
+        <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+          <defs>
+            <linearGradient id="heroGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#4f46e5"/>
+              <stop offset="100%" stop-color="#7c3aed"/>
+            </linearGradient>
+          </defs>
+          <circle cx="50" cy="50" r="46" stroke="url(#heroGrad)" stroke-width="1" stroke-dasharray="4 8" opacity="0.3" class="hero-ring-outer"/>
+          <circle cx="50" cy="50" r="38" stroke="#818cf8" stroke-width="0.5" opacity="0.15" class="hero-ring-inner"/>
+          <circle cx="50" cy="50" r="35" stroke="url(#heroGrad)" stroke-width="1.5" stroke-dasharray="1 8" stroke-linecap="round" opacity="0.25" class="hero-ring-outer"/>
+          <rect x="32" y="32" width="36" height="36" rx="9" fill="url(#heroGrad)"/>
+          <rect x="32.5" y="32.5" width="35" height="35" rx="8.5" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+          <g transform="translate(38, 38)" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+          </g>
+          <path d="M75 22l1.5 3l3.5 1.5l-3.5 1.5l-1.5 3l-1.5-3l-3.5-1.5l3.5-1.5z" fill="#a78bfa" class="hero-sparkle"/>
+          <path d="M24 28l1 2l2.5 1l-2.5 1l-1 2l-1-2l-2.5-1l2.5-1z" fill="#818cf8" class="hero-sparkle"/>
+        </svg>
+      </div>
+      <h1 class="hero-display" style="margin-bottom: 10px;">
+        Your AI-Powered<br>
+        Workout Companion
+      </h1>
+      <p class="lead" style="max-width: 680px; margin: 0 auto 28px;">
+        Transform your home workouts with real-time pose detection.
+        Count reps, track form, monitor sleep, water, and calories.
+      </p>
+      <div class="tile-actions">
+        <button onclick="launchPoseDetection()" class="btn-primary" style="font-size: 18px; padding: 14px 28px; gap: 8px;">
+          <span>&#x1F4F7;</span>
+          <span>Real Time Pose Detection</span>
+        </button>
+        <a href="#features" class="btn-secondary">Explore Features</a>
+        <a href="#cta" class="btn-secondary">Get Started Free</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FEATURES — Dark Tile
+       ============================================================ -->
+  <section class="tile bg-dark text-on-dark" id="features">
+    <div class="tile-content">
+      <p class="caption-strong text-primary-on-dark" style="margin-bottom: 8px;">FEATURES</p>
+      <h2 class="display-lg" style="margin-bottom: 8px;">Everything you need to stay fit</h2>
+      <p class="lead-airy" style="color: #cccccc; margin-bottom: 0;">
+        From real-time exercise tracking to comprehensive health monitoring — all in one place.
+      </p>
+      <div class="feature-grid">
+        <div class="feature-card fade-in">
+          <div class="feature-card-icon">&#x1F3CB;</div>
+          <h3>Real-Time Pose Detection</h3>
+          <p>MediaPipe-powered 33-point body landmark tracking detects your movements with precision, counting every rep accurately.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-card-icon">&#x1F4CA;</div>
+          <h3>Live Form Feedback</h3>
+          <p>Instant visual feedback on your exercise form — angle monitoring, progress bars, and correction cues in real time.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-card-icon">&#x1F4DD;</div>
+          <h3>Exercise Logging</h3>
+          <p>Every workout session is logged automatically with rep counts, hold times, and calorie burn estimates using MET values.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-card-icon">&#x1F34E;</div>
+          <h3>Calorie Tracking</h3>
+          <p>Search and log foods using USDA and OpenFoodFacts databases. Track your daily intake with ease.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-card-icon">&#x1F4A4;</div>
+          <h3>Sleep Monitoring</h3>
+          <p>Log and track your sleep hours per day. Understand your rest patterns and improve your recovery.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-card-icon">&#x1F4A7;</div>
+          <h3>Water Intake</h3>
+          <p>Stay hydrated by tracking your daily water consumption in milliliters. Set goals and see your progress.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       HOW IT WORKS — Light / Parchment Tile
+       ============================================================ -->
+  <section class="tile bg-parchment" id="how-it-works">
+    <div class="tile-content">
+      <p class="caption-strong text-primary" style="margin-bottom: 8px;">HOW IT WORKS</p>
+      <h2 class="display-lg" style="margin-bottom: 8px;">Start in three simple steps</h2>
+      <p class="lead-airy" style="color: #7a7a7a; margin-bottom: 0;">
+        No setup required. Just open your browser and begin.
+      </p>
+      <div class="step-grid">
+        <div class="step-card fade-in">
+          <div class="step-number">01</div>
+          <h3>Choose Your Exercise</h3>
+          <p>Select from push-ups, squats, plank, sit-ups, march, arm raises, or jumps. Each exercise has optimized detection parameters.</p>
+        </div>
+        <div class="step-card fade-in">
+          <div class="step-number">02</div>
+          <h3>Start Moving</h3>
+          <p>Stand in front of your camera. The AI tracks your body landmarks in real time, counting each rep.</p>
+        </div>
+        <div class="step-card fade-in">
+          <div class="step-number">03</div>
+          <h3>Review Your Progress</h3>
+          <p>View your daily summary — exercise logs, calories burned, sleep hours, and water intake all in one dashboard.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       EXERCISES — Dark Tile
+       ============================================================ -->
+  <section class="tile bg-dark-2 text-on-dark" id="exercises">
+    <div class="tile-content">
+      <p class="caption-strong text-primary-on-dark" style="margin-bottom: 8px;">EXERCISES</p>
+      <h2 class="display-lg" style="margin-bottom: 8px;">Seven exercises, one AI</h2>
+      <p class="lead-airy" style="color: #cccccc; margin-bottom: 0;">
+        Each movement is analyzed using biomechanical angle calculations for accurate rep counting and form assessment.
+      </p>
+      <div class="exercise-grid">
+        <div class="exercise-card fade-in">
+          <div class="exercise-card-header">
+            <div class="ex-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12.035 17.012a3 3 0 0 0-3-3l-.311-.002a.72.72 0 0 1-.505-1.229l1.195-1.195A2 2 0 0 1 10.828 11H12a2 2 0 0 0 0-4H9.243a3 3 0 0 0-2.122.879l-2.707 2.707A4.83 4.83 0 0 0 3 14a8 8 0 0 0 8 8h2a8 8 0 0 0 8-8V7a2 2 0 1 0-4 0v2a2 2 0 1 0 4 0"/>
+                <path d="M13.888 9.662A2 2 0 0 0 17 8V5A2 2 0 1 0 13 5"/>
+                <path d="M9 5A2 2 0 1 0 5 5V10"/>
+                <path d="M9 7V4A2 2 0 1 1 13 4V7.268"/>
+              </svg>
+            </div>
+            <h3>Push-Ups</h3>
+          </div>
+          <div class="exercise-card-body">
+            <p>Tracks elbow angle (shoulder-elbow-wrist) to count each repetition. Monitors back and hip alignment for proper form.</p>
+            <div class="exercise-stat">
+              <span>Metric: <strong>Elbow Angle</strong></span>
+              <span>Landmarks: <strong>Shoulder &rarr; Elbow &rarr; Wrist</strong></span>
+            </div>
+            <div class="exercise-db-stat" data-exercise="Push-up"></div>
+          </div>
+          <div class="exercise-weekly" data-exercise="Push-up">
+            <div class="ew-top-row">
+              <div class="ew-today">
+                <span class="ew-today-value" id="today-Push-up">&mdash;</span>
+                <span class="ew-today-label">today</span>
+              </div>
+              <div class="ew-chart-wrap"><canvas id="chart-Push-up"></canvas></div>
+              <div class="ew-total">
+                <span class="ew-total-value" id="weekTotal-Push-up">&mdash;</span>
+                <span class="ew-total-label">this week</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-card fade-in">
+          <div class="exercise-card-header">
+            <div class="ex-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="5" r="1"/>
+                <path d="m9 20 3-6 3 6"/>
+                <path d="m6 8 6 2 6-2"/>
+                <path d="M12 10v4"/>
+              </svg>
+            </div>
+            <h3>Squats</h3>
+          </div>
+          <div class="exercise-card-body">
+            <p>Uses knee angle (hip-knee-ankle) to detect full range of motion. Checks torso uprightness for safe squatting.</p>
+            <div class="exercise-stat">
+              <span>Metric: <strong>Knee Angle</strong></span>
+              <span>Landmarks: <strong>Hip &rarr; Knee &rarr; Ankle</strong></span>
+            </div>
+            <div class="exercise-db-stat" data-exercise="Squat"></div>
+          </div>
+          <div class="exercise-weekly" data-exercise="Squat">
+            <div class="ew-top-row">
+              <div class="ew-today">
+                <span class="ew-today-value" id="today-Squat">&mdash;</span>
+                <span class="ew-today-label">today</span>
+              </div>
+              <div class="ew-chart-wrap"><canvas id="chart-Squat"></canvas></div>
+              <div class="ew-total">
+                <span class="ew-total-value" id="weekTotal-Squat">&mdash;</span>
+                <span class="ew-total-label">this week</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-card fade-in">
+          <div class="exercise-card-header">
+            <div class="ex-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/>
+              </svg>
+            </div>
+            <h3>Plank</h3>
+          </div>
+          <div class="exercise-card-body">
+            <p>Measures body angle and horizontal alignment to track hold time. Perfect for core endurance training.</p>
+            <div class="exercise-stat">
+              <span>Metric: <strong>Hold Time</strong></span>
+              <span>Angle: <strong>Body Horizontal Alignment</strong></span>
+            </div>
+            <div class="exercise-db-stat" data-exercise="Plank"></div>
+          </div>
+          <div class="exercise-weekly" data-exercise="Plank">
+            <div class="ew-top-row">
+              <div class="ew-today">
+                <span class="ew-today-value" id="today-Plank">&mdash;</span>
+                <span class="ew-today-label">today</span>
+              </div>
+              <div class="ew-chart-wrap"><canvas id="chart-Plank"></canvas></div>
+              <div class="ew-total">
+                <span class="ew-total-value" id="weekTotal-Plank">&mdash;</span>
+                <span class="ew-total-label">this week</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-card fade-in">
+          <div class="exercise-card-header">
+            <div class="ex-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
+                <path d="M3.22 13H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/>
+              </svg>
+            </div>
+            <h3>Sit-Ups</h3>
+          </div>
+          <div class="exercise-card-body">
+            <p>Tracks hip angle (shoulder-hip-knee) to count each repetition. Uses bilateral averaging for accurate tracking even from a side angle.</p>
+            <div class="exercise-stat">
+              <span>Metric: <strong>Hip Angle</strong></span>
+              <span>Landmarks: <strong>Shoulder &rarr; Hip &rarr; Knee</strong></span>
+            </div>
+            <div class="exercise-db-stat" data-exercise="Sit-up"></div>
+          </div>
+          <div class="exercise-weekly" data-exercise="Sit-up">
+            <div class="ew-top-row">
+              <div class="ew-today">
+                <span class="ew-today-value" id="today-Sit-up">&mdash;</span>
+                <span class="ew-today-label">today</span>
+              </div>
+              <div class="ew-chart-wrap"><canvas id="chart-Sit-up"></canvas></div>
+              <div class="ew-total">
+                <span class="ew-total-value" id="weekTotal-Sit-up">&mdash;</span>
+                <span class="ew-total-label">this week</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-card fade-in">
+          <div class="exercise-card-header">
+            <div class="ex-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.029 4.285A2 2 0 0 0 7 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z"/>
+                <path d="M3 4v16"/>
+              </svg>
+            </div>
+            <h3>March in Place</h3>
+          </div>
+          <div class="exercise-card-body">
+            <p>Tracks vertical knee position relative to the hip. Each knee lift is counted independently for accurate step tracking.</p>
+            <div class="exercise-stat">
+              <span>Metric: <strong>Knee Lift Height</strong></span>
+              <span>Detection: <strong>Hip Y vs Knee Y</strong></span>
+            </div>
+            <div class="exercise-db-stat" data-exercise="March"></div>
+          </div>
+          <div class="exercise-weekly" data-exercise="March">
+            <div class="ew-top-row">
+              <div class="ew-today">
+                <span class="ew-today-value" id="today-March">&mdash;</span>
+                <span class="ew-today-label">today</span>
+              </div>
+              <div class="ew-chart-wrap"><canvas id="chart-March"></canvas></div>
+              <div class="ew-total">
+                <span class="ew-total-value" id="weekTotal-March">&mdash;</span>
+                <span class="ew-total-label">this week</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-card fade-in">
+          <div class="exercise-card-header">
+            <div class="ex-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 7h6v6"/>
+                <path d="m22 7-8.5 8.5-5-5L2 17"/>
+              </svg>
+            </div>
+            <h3>Arm Raises</h3>
+          </div>
+          <div class="exercise-card-body">
+            <p>Detects wrist Y-position relative to shoulders. Counts each full arm raise with smooth temporal filtering.</p>
+            <div class="exercise-stat">
+              <span>Metric: <strong>Wrist Position</strong></span>
+              <span>Reference: <strong>Shoulder Height</strong></span>
+            </div>
+            <div class="exercise-db-stat" data-exercise="Arm Raise"></div>
+          </div>
+          <div class="exercise-weekly" data-exercise="Arm Raise">
+            <div class="ew-top-row">
+              <div class="ew-today">
+                <span class="ew-today-value" id="today-Arm Raise">&mdash;</span>
+                <span class="ew-today-label">today</span>
+              </div>
+              <div class="ew-chart-wrap"><canvas id="chart-Arm Raise"></canvas></div>
+              <div class="ew-total">
+                <span class="ew-total-value" id="weekTotal-Arm Raise">&mdash;</span>
+                <span class="ew-total-label">this week</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="exercise-card fade-in">
+          <div class="exercise-card-header">
+            <div class="ex-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>
+              </svg>
+            </div>
+            <h3>Jump</h3>
+          </div>
+          <div class="exercise-card-body">
+            <p>Tracks hip center vertical oscillation to count each jump. Adaptive baseline automatically adjusts to your standing position.</p>
+            <div class="exercise-stat">
+              <span>Metric: <strong>Hip Vertical Motion</strong></span>
+              <span>Detection: <strong>Adaptive Baseline</strong></span>
+            </div>
+            <div class="exercise-db-stat" data-exercise="Jump"></div>
+          </div>
+          <div class="exercise-weekly" data-exercise="Jump">
+            <div class="ew-top-row">
+              <div class="ew-today">
+                <span class="ew-today-value" id="today-Jump">&mdash;</span>
+                <span class="ew-today-label">today</span>
+              </div>
+              <div class="ew-chart-wrap"><canvas id="chart-Jump"></canvas></div>
+              <div class="ew-total">
+                <span class="ew-total-value" id="weekTotal-Jump">&mdash;</span>
+                <span class="ew-total-label">this week</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TRACKERS — Light Tile
+       ============================================================ -->
+  <section class="tile bg-canvas" id="trackers">
+    <div class="tile-content">
+      <p class="caption-strong text-primary" style="margin-bottom: 8px;">HEALTH TRACKERS</p>
+      <h2 class="display-lg" style="margin-bottom: 8px;">Your complete health dashboard</h2>
+      <p class="lead-airy" style="color: #7a7a7a; margin-bottom: 0;">
+        Beyond workouts — monitor everything that matters.
+      </p>
+      <div class="tracker-grid">
+        <div class="tracker-card fade-in" onclick="launchTrackerApp('calorie')">
+          <div class="tracker-card-icon" style="background: rgba(0,102,204,0.1); color: #0066cc;">&#x1F34E;</div>
+          <h3>Calorie Tracker</h3>
+          <p>Search over 800,000 foods from the USDA and OpenFoodFacts databases. Log meals and track your daily calorie intake.</p>
+          <div class="tracker-today empty" id="tracker-today-calorie">
+            <span class="tracker-today-label">Today</span>
+            <span class="tracker-today-value" id="tracker-today-value-calorie">0 <span class="unit">kcal</span></span>
+          </div>
+        </div>
+        <div class="tracker-card fade-in" onclick="launchTrackerApp('sleep')">
+          <div class="tracker-card-icon" style="background: rgba(90,200,250,0.1); color: #0066cc;">&#x1F4A4;</div>
+          <h3>Sleep Tracker</h3>
+          <p>Log your sleep hours and build healthier sleep habits. Monitor patterns over days, weeks, and months.</p>
+          <div class="tracker-today empty" id="tracker-today-sleep">
+            <span class="tracker-today-label">Today</span>
+            <span class="tracker-today-value" id="tracker-today-value-sleep">0 <span class="unit">hrs</span></span>
+          </div>
+        </div>
+        <div class="tracker-card fade-in" onclick="launchTrackerApp('water')">
+          <div class="tracker-card-icon" style="background: rgba(0,150,255,0.1); color: #0066cc;">&#x1F4A7;</div>
+          <h3>Water Tracker</h3>
+          <p>Track your daily water intake in milliliters. Stay hydrated with customizable daily goals and progress tracking.</p>
+          <div class="tracker-today empty" id="tracker-today-water">
+            <span class="tracker-today-label">Today</span>
+            <span class="tracker-today-value" id="tracker-today-value-water">0 <span class="unit">ml</span></span>
+          </div>
+        </div>
+        <div class="tracker-card fade-in">
+          <div onclick="launchTrackerApp('step')" style="cursor: pointer;">
+            <div class="tracker-card-icon" style="background: rgba(50,200,100,0.1); color: #2ecc71;">&#x1F463;</div>
+            <h3>Step Tracker</h3>
+            <p>Log your daily steps and track walking activity. Get calorie burn estimates personalized to your body metrics.</p>
+          </div>
+          <div class="tracker-today empty" id="tracker-today-step">
+            <span class="tracker-today-label">Today</span>
+            <span class="tracker-today-value" id="tracker-today-value-step">0 <span class="unit">steps</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calorie Summary -->
+      <div class="calorie-summary-card fade-in" id="calorie-summary" style="display: none; margin-top: 40px;">
+        <p class="caption-strong text-primary" style="margin-bottom: 8px;">CALORIE BALANCE</p>
+        <div class="cal-summary-grid">
+          <div class="cal-metric cal-in">
+            <span class="cal-metric-label">Consumed</span>
+            <span class="cal-metric-value" id="cal-in-value">0</span>
+            <span class="cal-metric-unit">kcal</span>
+          </div>
+          <div class="cal-metric cal-out">
+            <span class="cal-metric-label">Burned</span>
+            <span class="cal-metric-value" id="cal-out-value">0</span>
+            <span class="cal-metric-unit">kcal</span>
+          </div>
+          <div class="cal-metric cal-net">
+            <span class="cal-metric-label">Net</span>
+            <span class="cal-metric-value" id="cal-net-value">0</span>
+            <span class="cal-metric-unit">kcal</span>
+          </div>
+          <div class="cal-metric cal-breakdown">
+            <span class="cal-metric-label">BMR</span>
+            <span class="cal-metric-value" id="cal-bmr-value" style="font-size: 18px;">0</span>
+            <span class="cal-metric-unit">kcal</span>
+          </div>
+          <div class="cal-metric cal-breakdown">
+            <span class="cal-metric-label">Exercise</span>
+            <span class="cal-metric-value" id="cal-exercise-value" style="font-size: 18px;">0</span>
+            <span class="cal-metric-unit">kcal</span>
+          </div>
+          <div class="cal-metric cal-breakdown">
+            <span class="cal-metric-label">Walking</span>
+            <span class="cal-metric-value" id="cal-steps-value" style="font-size: 18px;">0</span>
+            <span class="cal-metric-unit">kcal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CALENDAR — Dark Tile
+       ============================================================ -->
+  <section class="tile bg-dark text-on-dark" id="calendar-section">
+    <div class="tile-content">
+      <p class="caption-strong text-primary-on-dark" style="margin-bottom: 8px;">ACTIVITY CALENDAR</p>
+      <h2 class="display-lg" style="margin-bottom: 8px;">Your Monthly Progress</h2>
+      <p class="lead-airy" style="color: #cccccc; margin-bottom: 0;">
+        Days where you exercised and hit your calorie goal are marked.
+      </p>
+      <div class="cal-container">
+        <div class="cal-header">
+          <button class="cal-nav-btn" id="cal-prev" onclick="changeMonth(-1)">&#9664;</button>
+          <span class="cal-month-year" id="cal-month-year"></span>
+          <button class="cal-nav-btn" id="cal-next" onclick="changeMonth(1)">&#9654;</button>
+        </div>
+        <div class="cal-weekdays">
+          <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+        <div class="cal-legend">
+          <span class="cal-legend-item"><span class="cal-dot cal-dot-green"></span> Exercised &amp; Goal Met</span>
+          <span class="cal-legend-item"><span class="cal-dot cal-dot-blue"></span> Exercised</span>
+          <span class="cal-legend-item"><span class="cal-dot cal-dot-orange"></span> Calories Logged</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       STATS — Dark Tile
+       ============================================================ -->
+  <section class="tile bg-dark text-on-dark">
+    <div class="tile-content">
+      <div class="stats-row">
+        <div class="stat-item fade-in">
+          <div class="stat-number">7</div>
+          <div class="stat-label" style="color: #999;">Supported Exercises</div>
+        </div>
+        <div class="stat-item fade-in">
+          <div class="stat-number">33</div>
+          <div class="stat-label" style="color: #999;">Body Landmarks Tracked</div>
+        </div>
+        <div class="stat-item fade-in">
+          <div class="stat-number">5</div>
+          <div class="stat-label" style="color: #999;">Tracker Modules</div>
+        </div>
+        <div class="stat-item fade-in">
+          <div class="stat-number">24/7</div>
+          <div class="stat-label" style="color: #999;">Real-Time Monitoring</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       TECHNOLOGY — Light / Parchment Tile
+       ============================================================ -->
+  <section class="tile bg-parchment" id="tech">
+    <div class="tile-content">
+      <p class="caption-strong text-primary" style="margin-bottom: 8px;">TECHNOLOGY</p>
+      <h2 class="display-lg" style="margin-bottom: 8px;">Built with modern AI</h2>
+      <p class="lead-airy" style="color: #7a7a7a; margin-bottom: 0;">
+        Computer vision, machine learning, and a robust web backend power every feature.
+      </p>
+      <div class="tech-list">
+        <span class="tech-chip" style="background: rgba(0,102,204,0.1); color: #0066cc; border-color: rgba(0,102,204,0.2);">MediaPipe Pose</span>
+        <span class="tech-chip" style="background: rgba(0,102,204,0.1); color: #0066cc; border-color: rgba(0,102,204,0.2);">OpenCV</span>
+        <span class="tech-chip" style="background: rgba(0,102,204,0.1); color: #0066cc; border-color: rgba(0,102,204,0.2);">Python</span>
+        <span class="tech-chip" style="background: rgba(0,102,204,0.1); color: #0066cc; border-color: rgba(0,102,204,0.2);">FastAPI</span>
+        <span class="tech-chip" style="background: rgba(0,102,204,0.1); color: #0066cc; border-color: rgba(0,102,204,0.2);">SQLite</span>
+        <span class="tech-chip" style="background: rgba(0,102,204,0.1); color: #0066cc; border-color: rgba(0,102,204,0.2);">MediaPipe JS</span>
+        <span class="tech-chip" style="background: rgba(0,102,204,0.1); color: #0066cc; border-color: rgba(0,102,204,0.2);">Tkinter</span>
+        <span class="tech-chip" style="background: rgba(0,102,204,0.1); color: #0066cc; border-color: rgba(0,102,204,0.2);">USDA API</span>
+        <span class="tech-chip" style="background: rgba(0,102,204,0.1); color: #0066cc; border-color: rgba(0,102,204,0.2);">OpenFoodFacts</span>
+        <span class="tech-chip" style="background: rgba(0,102,204,0.1); color: #0066cc; border-color: rgba(0,102,204,0.2);">Uvicorn</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CTA — Dark Tile
+       ============================================================ -->
+  <section class="cta-tile bg-dark text-on-dark" id="cta">
+    <div class="container">
+      <h2 class="display-lg" style="margin-bottom: 10px;">
+        Ready to transform your workouts?
+      </h2>
+      <p class="lead-airy" style="color: #cccccc; max-width: 560px; margin: 0 auto 32px;">
+        Open the web app, grant camera access, and start your first AI-guided workout.
+      </p>
+      <div class="tile-actions">
+        <button class="btn-store-hero" onclick="openModal('signin')">Sign In</button>
+        <button class="btn-secondary" style="border-color: #2997ff; color: #2997ff; font-size: 18px; font-weight: 300; padding: 14px 28px;" onclick="openModal('signup')">Sign Up</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SIGN IN MODAL
+       ============================================================ -->
+  <div class="modal-overlay" id="signin-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('signin')">&times;</button>
+      <h2 class="display-md" style="margin-bottom: 4px;">Sign In</h2>
+      <p class="caption" style="color: #7a7a7a; margin-bottom: 24px;">Welcome back to your fitness journey</p>
+      <form id="signin-form" onsubmit="return handleSignIn(event)">
+        <div class="form-group">
+          <label class="form-label" for="signin-username">Username</label>
+          <input class="form-input" id="signin-username" type="text" placeholder="Enter your username" autocomplete="username" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signin-password">Password</label>
+          <input class="form-input" id="signin-password" type="password" placeholder="Enter your password" autocomplete="current-password" required>
+        </div>
+        <div class="form-error" id="signin-error"></div>
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+          <span id="signin-spinner" class="spinner" style="display: none;"></span>
+          <span id="signin-btn-text">Sign In</span>
+        </button>
+        <p class="caption" style="text-align: center; margin-top: 16px; color: #7a7a7a;">
+          Don't have an account?
+          <a href="#" onclick="switchModal('signin','signup'); return false;" style="color: #0066cc;">Sign Up</a>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SIGN UP MODAL
+       ============================================================ -->
+  <div class="modal-overlay" id="signup-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('signup')">&times;</button>
+      <h2 class="display-md" style="margin-bottom: 4px;">Create Account</h2>
+      <p class="caption" style="color: #7a7a7a; margin-bottom: 24px;">Start your AI-powered fitness journey</p>
+      <form id="signup-form" onsubmit="return handleSignUp(event)">
+        <div class="form-group">
+          <label class="form-label" for="signup-username">Username</label>
+          <input class="form-input" id="signup-username" type="text" placeholder="Choose a username" autocomplete="username" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signup-password">Password</label>
+          <input class="form-input" id="signup-password" type="password" placeholder="Create a strong password" autocomplete="new-password" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="signup-confirm">Confirm Password</label>
+          <input class="form-input" id="signup-confirm" type="password" placeholder="Re-enter your password" autocomplete="new-password" required>
+        </div>
+        <div class="password-rules" id="signup-rules">
+          <span class="rule" data-rule="length">At least 8 characters</span>
+          <span class="rule" data-rule="upper">1 uppercase letter</span>
+          <span class="rule" data-rule="lower">1 lowercase letter</span>
+          <span class="rule" data-rule="digit">1 digit</span>
+        </div>
+        <div class="form-error" id="signup-error"></div>
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+          <span id="signup-spinner" class="spinner" style="display: none;"></span>
+          <span id="signup-btn-text">Create Account</span>
+        </button>
+        <p class="caption" style="text-align: center; margin-top: 16px; color: #7a7a7a;">
+          Already have an account?
+          <a href="#" onclick="switchModal('signup','signin'); return false;" style="color: #0066cc;">Sign In</a>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       PROFILE MODAL
+       ============================================================ -->
+  <div class="modal-overlay" id="profile-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeProfileModal()">&times;</button>
+      <h2 class="display-md" style="margin-bottom: 4px;">My Profile</h2>
+      <p class="caption" style="color: #7a7a7a; margin-bottom: 24px;">Manage your personal information</p>
+      <form id="profile-form" onsubmit="return saveProfile(event)">
+        <div class="form-group">
+          <label class="form-label" for="profile-username">Username</label>
+          <input class="form-input" id="profile-username" type="text" disabled style="background:#e8e8ed; cursor:not-allowed;">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="profile-age">Age</label>
+          <input class="form-input" id="profile-age" type="number" placeholder="Enter your age" min="1" max="150">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="profile-height">Height (cm)</label>
+          <input class="form-input" id="profile-height" type="number" step="0.1" placeholder="e.g. 170">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="profile-weight">Weight (kg)</label>
+          <input class="form-input" id="profile-weight" type="number" step="0.1" placeholder="e.g. 70">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="profile-gender">Gender</label>
+          <select class="form-input" id="profile-gender" style="appearance: auto;">
+            <option value="">Select gender</option>
+            <option value="Female">Female</option>
+            <option value="Male">Male</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <button type="button" class="btn-secondary" style="width:100%; justify-content:center;" onclick="calculateProfileBMI()">Calculate BMI &amp; Ideal Range</button>
+        </div>
+        <div id="profile-bmi-result" class="profile-result"></div>
+        <div id="profile-ideal-result" class="profile-result"></div>
+        <div class="profile-result-row" id="profile-metrics" style="display:none;">
+          <span class="profile-result-item">BMI: <strong id="profile-bmi-value">-</strong></span>
+          <span class="profile-result-item">Ideal Weight: <strong id="profile-ideal-range">-</strong></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="profile-target">Target Weight (kg)</label>
+          <input class="form-input" id="profile-target" type="number" step="0.1" placeholder="Your goal weight">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="profile-calgoal">Daily Calorie Goal (kcal)</label>
+          <input class="form-input" id="profile-calgoal" type="number" step="50" placeholder="e.g. 2000">
+        </div>
+        <div class="form-error" id="profile-error"></div>
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+          <span id="profile-spinner" class="spinner" style="display: none;"></span>
+          <span id="profile-btn-text">Save Profile</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       AI COACH CHAT MODAL
+       ============================================================ -->
+  <div class="modal-overlay" id="aicoach-modal">
+    <div class="modal" style="max-width: 920px; padding: 0; height: 620px;">
+      <button class="modal-close" onclick="closeAICoach()" style="z-index:10;">&times;</button>
+      <div style="display:flex; height:100%;">
+        <!-- Sidebar: chat list -->
+        <div style="width:260px; min-width:260px; border-right:1px solid #eee; display:flex; flex-direction:column; background:#fafafa;">
+          <div style="padding:20px 14px 14px; border-bottom:1px solid #eee;">
+            <button onclick="newAICoachChat()" style="
+              width:100%; padding:10px 0; border-radius:10px; border:1px dashed #ccc;
+              background:transparent; color:#6c63ff; font-size:13px; font-weight:600;
+              cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.2s;
+            " onmouseover="this.style.borderColor='#6c63ff';this.style.background='#f5f3ff'"
+             onmouseout="this.style.borderColor='#ccc';this.style.background='transparent'">
+              + New Chat
+            </button>
+          </div>
+          <div id="aicoach-chat-list" style="flex:1; overflow-y:auto; padding:8px;">
+            <!-- populated by JS -->
+          </div>
+        </div>
+        <!-- Main chat area -->
+        <div style="flex:1; display:flex; flex-direction:column; min-width:0;">
+          <div style="padding: 28px 32px 0 32px;">
+            <h2 class="display-md" style="margin-bottom: 2px;">AI Fitness Coach</h2>
+            <p class="caption" style="color: #7a7a7a; margin-bottom: 0;" id="aicoach-subtitle">Ask anything about your fitness data</p>
+          </div>
+          <!-- Chat messages -->
+          <div id="aicoach-chat" style="
+            flex:1; overflow-y: auto; padding: 20px 32px;
+            background: #f8f9fc; margin: 16px 0 0 0;
+            display: flex; flex-direction: column; gap: 12px;
+          "></div>
+          <!-- Typing indicator -->
+          <div id="aicoach-typing" style="display:none; padding: 0 32px 8px 32px; font-size:14px; color:#999;">
+            <span class="spinner" style="width:14px;height:14px;border-color:#ccc;border-top-color:#6c63ff;margin-right:8px;vertical-align:middle;"></span>
+            AI Coach is thinking...
+          </div>
+          <!-- Input area -->
+          <div style="padding: 12px 32px 28px 32px; display:flex; gap:10px; border-top:1px solid #eee;">
+            <input id="aicoach-input" type="text" placeholder="Ask your AI coach..." style="
+              flex:1; padding:12px 16px; border-radius:12px; border:1px solid #ddd;
+              font-family:'Inter',sans-serif; font-size:15px; outline:none;
+            " onkeydown="if(event.key==='Enter') sendCoachMessage()">
+            <button id="aicoach-send" onclick="sendCoachMessage()" style="
+              padding:12px 24px; border-radius:12px; border:none;
+              background:#6c63ff; color:#fff; font-size:15px; font-weight:600;
+              cursor:pointer; font-family:'Inter',sans-serif;
+            ">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SUCCESS TOAST
+       ============================================================ -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ============================================================
+       FLOATING MUSIC PLAYER
+       ============================================================ -->
+  <div class="music-player" id="music-player">
+    <div class="mp-icon">&#9835;</div>
+    <div class="mp-controls">
+      <button class="mp-btn" id="mp-btn" onclick="toggleMusic()" title="Play">&#9654;</button>
+      <input type="range" id="mp-volume" min="0" max="100" value="50" oninput="setVolume(this.value)" title="Volume">
+    </div>
+  </div>
+
+  <!-- Floating AI Coach Button (Lucide sparkles icon, https://github.com/lucide-icons/lucide) -->
+  <button class="aicoach-fab" id="aicoach-fab" onclick="openAICoach()" title="AI Coach">
+    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+      <path d="M20 2v4"/>
+      <path d="M22 4h-4"/>
+      <circle cx="4" cy="20" r="2"/>
+    </svg>
+  </button>
+
+  <!-- FOOTER DELETED -->
+
+  <!-- ============================================================
+       JavaScript — Auth Logic & Scroll Animations
+       ============================================================ -->
+  <script>
+    // --- API base URL ---
+    const API_BASE = 'http://localhost:8000';
+
+    // --- Real Time Pose Detection ---
+    async function launchPoseDetection() {
+      const username = sessionStorage.getItem('fitness_username');
+      if (!username) {
+        showToast('Please sign in first to start a workout session.', 'error');
+        openModal('signin');
+        return;
+      }
+      try {
+        const res = await fetch(API_BASE + '/api/launch-pose-detection', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showToast(data.detail || 'Failed to launch.', 'error');
+        } else {
+          showToast('Pose detection launched! Check the new window.', 'success');
+        }
+      } catch (err) {
+        showToast('Cannot connect to server. Make sure the backend is running on port 8000.', 'error');
+      }
+    }
+
+    // --- Toast ---
+    function showToast(msg, type) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast ' + (type || '') + ' show';
+      setTimeout(() => { t.className = 'toast'; }, 3000);
+    }
+
+    // --- Modal Controls ---
+    function openModal(name) {
+      document.getElementById(name + '-modal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(name) {
+      document.getElementById(name + '-modal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    function switchModal(from, to) {
+      closeModal(from);
+      openModal(to);
+    }
+
+    // Close modal on overlay click
+    document.querySelectorAll('.modal-overlay').forEach(el => {
+      el.addEventListener('click', function(e) {
+        if (e.target === this) {
+          this.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.active').forEach(el => {
+          el.classList.remove('active');
+          document.body.style.overflow = '';
+        });
+      }
+    });
+
+    // --- Live password rule validation ---
+    document.getElementById('signup-password').addEventListener('input', function() {
+      const pwd = this.value;
+      document.querySelector('[data-rule="length"]').classList.toggle('met', pwd.length >= 8);
+      document.querySelector('[data-rule="upper"]').classList.toggle('met', /[A-Z]/.test(pwd));
+      document.querySelector('[data-rule="lower"]').classList.toggle('met', /[a-z]/.test(pwd));
+      document.querySelector('[data-rule="digit"]').classList.toggle('met', /[0-9]/.test(pwd));
+    });
+
+    // --- Show form error ---
+    function setError(formId, msg) {
+      const el = document.getElementById(formId + '-error');
+      el.textContent = msg;
+      el.className = 'form-error ' + (msg ? 'visible' : '');
+    }
+
+    // --- Set button loading state ---
+    function setLoading(formId, loading) {
+      const btn = document.querySelector('#' + formId + '-form button[type="submit"]');
+      const spinner = document.getElementById(formId + '-spinner');
+      const text = document.getElementById(formId + '-btn-text');
+      btn.disabled = loading;
+      spinner.style.display = loading ? 'inline-block' : 'none';
+      text.textContent = loading ? (formId === 'signin' ? 'Signing in...' : 'Creating account...') : (formId === 'signin' ? 'Sign In' : 'Create Account');
+    }
+
+    // --- Auth UI updater ---
+    function updateAuthUI() {
+      const username = sessionStorage.getItem('fitness_username');
+      const signinBtn = document.getElementById('btn-signin');
+      const signupBtn = document.getElementById('btn-signup');
+      const userInfo = document.getElementById('user-info');
+      const greeting = document.getElementById('user-greeting');
+      if (username) {
+        signinBtn.style.display = 'none';
+        signupBtn.style.display = 'none';
+        userInfo.style.display = 'flex';
+        greeting.textContent = username;
+      } else {
+        signinBtn.style.display = 'inline-flex';
+        signupBtn.style.display = 'inline-flex';
+        userInfo.style.display = 'none';
+        greeting.textContent = '';
+      }
+    }
+
+    // --- Load exercise stats from DB ---
+    function loadExerciseStats() {
+      var username = sessionStorage.getItem('fitness_username');
+      var cards = document.querySelectorAll('.exercise-db-stat');
+      // Reset all cards to empty
+      cards.forEach(function(c) { c.textContent = ''; });
+      if (!username) return;
+
+      fetch(API_BASE + '/api/exercise-stats/' + encodeURIComponent(username))
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (!data.stats) return;
+          cards.forEach(function(card) {
+            var exName = card.getAttribute('data-exercise');
+            // stat data available but not displayed here
+          });
+        })
+        .catch(function() { /* silently ignore */ });
+    }
+
+    // --- Chart.js helpers ---
+    if (!window._chartInstances) window._chartInstances = {};
+
+    function _destroyChart(id) {
+      if (window._chartInstances[id]) {
+        window._chartInstances[id].destroy();
+        delete window._chartInstances[id];
+      }
+    }
+
+    function _chartColors() {
+      return {
+        barBg: 'rgba(48,209,88,0.7)',
+        barBgToday: 'rgba(41,151,255,0.85)',
+        barBorder: 'rgba(48,209,88,1)',
+        lineBorder: '#2997ff',
+        lineFill: 'rgba(41,151,255,0.15)',
+        pointBg: '#2997ff',
+        gridColor: 'rgba(255,255,255,0.06)',
+        textColor: '#999',
+      };
+    }
+
+    function _makeDayLabels(count) {
+      var labels = [];
+      var d = new Date();
+      for (var i = count - 1; i >= 0; i--) {
+        var dd = new Date(d);
+        dd.setDate(dd.getDate() - i);
+        labels.push(['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dd.getDay()]);
+      }
+      return labels;
+    }
+
+    // --- Exercise 7-Day Bar Charts (card-level) + 30-Day Trend Charts ---
+    function loadExerciseCharts() {
+      var username = sessionStorage.getItem('fitness_username');
+
+      // Reset today / week values
+      document.querySelectorAll('.exercise-weekly').forEach(function(el) {
+        el.querySelector('.ew-today-value').textContent = '—';
+        el.querySelector('.ew-total-value').textContent = '—';
+      });
+
+      if (!username) return;
+
+      fetch(API_BASE + '/api/exercise-history/' + encodeURIComponent(username) + '?days=30')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (!data.history) return;
+          var colors = _chartColors();
+          var dayLabels7 = _makeDayLabels(7);
+          var today = new Date();
+
+          // Build last 7 date strings
+          function buildDates(n) {
+            var arr = [];
+            for (var i = n - 1; i >= 0; i--) {
+              var d = new Date(today);
+              d.setDate(d.getDate() - i);
+              arr.push(d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'));
+            }
+            return arr;
+          }
+          var last7 = buildDates(7);
+
+          // --- 7-Day card bar charts ---
+          document.querySelectorAll('.exercise-weekly').forEach(function(el) {
+            var exName = el.getAttribute('data-exercise');
+            if (!exName) return;
+            var records = data.history[exName] || [];
+            var map = {};
+            records.forEach(function(r) { map[r.date] = r.total; });
+
+            var weekTotal = 0;
+            var todayVal = 0;
+            var values7 = [];
+
+            last7.forEach(function(date, idx) {
+              var val = map[date] || 0;
+              weekTotal += val;
+              if (idx === 6) todayVal = val;
+              values7.push(val);
+            });
+
+            el.querySelector('.ew-today-value').textContent = todayVal;
+            el.querySelector('.ew-total-value').textContent = weekTotal;
+
+            var canvas = el.querySelector('.ew-chart-wrap canvas');
+            if (!canvas) return;
+            var chartId = 'card-' + exName.replace(/\s+/g, '-');
+            _destroyChart(chartId);
+
+            var bgColors = values7.map(function(v, i) {
+              return i === 6 ? colors.barBgToday : colors.barBg;
+            });
+
+            window._chartInstances[chartId] = new Chart(canvas, {
+              type: 'bar',
+              data: {
+                labels: dayLabels7,
+                datasets: [{
+                  data: values7,
+                  backgroundColor: bgColors,
+                  borderRadius: 3,
+                  borderSkipped: false,
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: { duration: 400 },
+                plugins: {
+                  legend: { display: false },
+                  tooltip: {
+                    enabled: true,
+                    backgroundColor: '#1c1c1e',
+                    titleColor: '#f5f5f7',
+                    bodyColor: '#aaa',
+                    borderColor: '#333',
+                    borderWidth: 1,
+                    callbacks: {
+                      label: function(ctx) {
+                        return ctx.parsed.y + ' ' + (records.length > 0 ? records[0].unit : 'reps');
+                      }
+                    }
+                  }
+                },
+                scales: {
+                  x: {
+                    display: true,
+                    grid: { display: false },
+                    ticks: {
+                      color: '#555',
+                      font: { size: 8 },
+                      maxRotation: 0,
+                    }
+                  },
+                  y: {
+                    display: false,
+                    beginAtZero: true,
+                    grid: { display: false },
+                  }
+                }
+              }
+            });
+          });
+        })
+        .catch(function() { /* silently ignore */ });
+    }
+
+    // --- 30-Day Trend Line Charts ---
+    // --- AI Coach Chat ---
+    var coachHistory = [];
+    var currentChatId = null;
+
+    function addChatBubble(role, text) {
+      var chat = document.getElementById('aicoach-chat');
+      var bubble = document.createElement('div');
+      var isUser = role === 'user';
+      bubble.style.cssText =
+        'max-width:80%;padding:12px 18px;border-radius:16px;' +
+        'font-size:15px;line-height:1.5;word-break:break-word;' +
+        (isUser
+          ? 'align-self:flex-end;background:#6c63ff;color:#fff;border-bottom-right-radius:4px;'
+          : 'align-self:flex-start;background:#e8e8f0;color:#1d1d1f;border-bottom-left-radius:4px;');
+      bubble.textContent = text;
+      chat.appendChild(bubble);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function renderChatBubble(msg) {
+      var bubble = document.createElement('div');
+      var isUser = msg.role === 'user';
+      bubble.style.cssText =
+        'max-width:80%;padding:12px 18px;border-radius:16px;' +
+        'font-size:15px;line-height:1.5;word-break:break-word;' +
+        (isUser
+          ? 'align-self:flex-end;background:#6c63ff;color:#fff;border-bottom-right-radius:4px;'
+          : 'align-self:flex-start;background:#e8e8f0;color:#1d1d1f;border-bottom-left-radius:4px;');
+      bubble.textContent = msg.text;
+      return bubble;
+    }
+
+    function loadCoachChatList() {
+      var username = sessionStorage.getItem('fitness_username');
+      if (!username) return;
+      var container = document.getElementById('aicoach-chat-list');
+      fetch(API_BASE + '/api/ai-coach/chats/' + encodeURIComponent(username))
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          container.innerHTML = '';
+          var chats = data.chats || [];
+          if (chats.length === 0) {
+            container.innerHTML = '<div style="padding:20px 14px;text-align:center;color:#aaa;font-size:13px;">No past conversations</div>';
+            // Show welcome message if nothing loaded yet
+            if (currentChatId === null) {
+              var chatArea = document.getElementById('aicoach-chat');
+              chatArea.innerHTML = '';
+              addChatBubble('assistant', "Hi! I'm your AI fitness coach. Ask me anything about your workouts, nutrition, sleep, or hydration. I have your latest data ready.");
+            }
+            return;
+          }
+          // Auto-load most recent chat if none is active (initial open after refresh)
+          if (currentChatId === null) {
+            var chatArea = document.getElementById('aicoach-chat');
+            chatArea.innerHTML = '';
+            switchCoachChat(chats[0].id);
+            return;
+          }
+          for (var i = 0; i < chats.length; i++) {
+            var c = chats[i];
+            var item = document.createElement('div');
+            var isActive = currentChatId === c.id;
+            item.style.cssText =
+              'padding:12px 14px;border-radius:10px;cursor:pointer;margin-bottom:4px;' +
+              'transition:all 0.15s;font-family:\'Inter\',sans-serif;' +
+              (isActive ? 'background:#e8e4ff;' : 'background:transparent;');
+            item.onmouseover = function() { if (!this.dataset.active) this.style.background = '#f0f0f5'; };
+            item.onmouseout = function() { if (!this.dataset.active) this.style.background = 'transparent'; };
+            if (isActive) item.dataset.active = '1';
+
+            var title = document.createElement('div');
+            title.style.cssText = 'font-size:13px;font-weight:600;color:#1d1d1f;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+            title.textContent = c.title;
+
+            var preview = document.createElement('div');
+            preview.style.cssText = 'font-size:11px;color:#888;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+            preview.textContent = c.last_message || (c.message_count + ' message' + (c.message_count !== 1 ? 's' : ''));
+
+            var delBtn = document.createElement('button');
+            delBtn.textContent = '✕';
+            delBtn.title = 'Delete chat';
+            delBtn.style.cssText =
+              'position:absolute;top:4px;right:4px;width:20px;height:20px;border:none;' +
+              'border-radius:50%;background:transparent;color:#bbb;cursor:pointer;' +
+              'font-size:11px;display:none;align-items:center;justify-content:center;line-height:1;padding:0;';
+            delBtn.onmouseover = function() { this.style.color = '#e74c3c'; };
+            delBtn.onmouseout = function() { this.style.color = '#bbb'; };
+            delBtn.onclick = (function(chatId) {
+              return function(e) {
+                e.stopPropagation();
+                deleteCoachChat(chatId);
+              };
+            })(c.id);
+
+            item.style.position = 'relative';
+            item.onmouseenter = function() { this.querySelector('button').style.display = 'flex'; };
+            item.onmouseleave = function() { this.querySelector('button').style.display = 'none'; };
+
+            item.appendChild(title);
+            item.appendChild(preview);
+            item.appendChild(delBtn);
+
+            item.onclick = (function(chatId) {
+              return function() { switchCoachChat(chatId); };
+            })(c.id);
+
+            container.appendChild(item);
+          }
+        })
+        .catch(function() {
+          container.innerHTML = '<div style="padding:20px 14px;text-align:center;color:#aaa;font-size:13px;">Could not load chats</div>';
+        });
+    }
+
+    function deleteCoachChat(chatId) {
+      if (!confirm('Delete this conversation?')) return;
+      fetch(API_BASE + '/api/ai-coach/chats/' + chatId, { method: 'DELETE' })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (currentChatId === chatId) {
+            currentChatId = null;
+            coachHistory = [];
+            document.getElementById('aicoach-chat').innerHTML = '';
+            // Re-fetch chat list which will auto-load next available chat or show welcome
+            loadCoachChatList();
+          } else {
+            loadCoachChatList();
+          }
+          showToast('Chat deleted.', 'success');
+        })
+        .catch(function() {
+          showToast('Failed to delete chat.', 'error');
+        });
+    }
+
+    function switchCoachChat(chatId) {
+      currentChatId = chatId;
+      coachHistory = [];
+      var chat = document.getElementById('aicoach-chat');
+      chat.innerHTML = '<div style="text-align:center;padding:40px;color:#aaa;font-size:14px;">Loading...</div>';
+
+      // Highlight active chat in sidebar
+      var items = document.getElementById('aicoach-chat-list').children;
+      for (var i = 0; i < items.length; i++) {
+        items[i].style.background = 'transparent';
+        items[i].dataset.active = '';
+      }
+
+      fetch(API_BASE + '/api/ai-coach/chats/' + chatId + '/messages')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          chat.innerHTML = '';
+          var messages = data.messages || [];
+          if (messages.length === 0) {
+            addChatBubble('assistant', "Hi! I'm your AI fitness coach. Ask me anything about your workouts, nutrition, sleep, or hydration. I have your latest data ready.");
+          } else {
+            for (var i = 0; i < messages.length; i++) {
+              coachHistory.push({ role: messages[i].role, text: messages[i].text });
+              chat.appendChild(renderChatBubble(messages[i]));
+            }
+            chat.scrollTop = chat.scrollHeight;
+          }
+          document.getElementById('aicoach-input').disabled = false;
+          document.getElementById('aicoach-send').disabled = false;
+          document.getElementById('aicoach-input').focus();
+          loadCoachChatList();  // re-render sidebar to update active state
+        })
+        .catch(function() {
+          chat.innerHTML = '';
+          addChatBubble('assistant', 'Failed to load messages.');
+        });
+    }
+
+    function openAICoach() {
+      var username = sessionStorage.getItem('fitness_username');
+      if (!username) {
+        showToast('Please sign in first.', 'error');
+        return;
+      }
+      var modal = document.getElementById('aicoach-modal');
+      var chat = document.getElementById('aicoach-chat');
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+
+      document.getElementById('aicoach-input').value = '';
+      document.getElementById('aicoach-input').disabled = false;
+      document.getElementById('aicoach-send').disabled = false;
+      document.getElementById('aicoach-typing').style.display = 'none';
+
+      // If we have an active chat with history in memory, re-render it
+      if (currentChatId !== null && coachHistory.length > 0) {
+        chat.innerHTML = '';
+        for (var i = 0; i < coachHistory.length; i++) {
+          chat.appendChild(renderChatBubble(coachHistory[i]));
+        }
+        chat.scrollTop = chat.scrollHeight;
+      } else {
+        // Show loading; loadCoachChatList will auto-load the most recent chat
+        // or show the welcome message if no past chats exist
+        chat.innerHTML = '<div style="text-align:center;padding:40px;color:#aaa;font-size:14px;">Loading conversations...</div>';
+      }
+
+      // Load sidebar (auto-loads most recent chat if none active)
+      loadCoachChatList();
+      document.getElementById('aicoach-input').focus();
+    }
+
+    function closeAICoach() {
+      document.getElementById('aicoach-modal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function newAICoachChat() {
+      var username = sessionStorage.getItem('fitness_username');
+      if (!username) {
+        showToast('Please sign in first.', 'error');
+        return;
+      }
+      fetch(API_BASE + '/api/ai-coach/chats', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username })
+      })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          currentChatId = data.chat_id;
+          coachHistory = [];
+          var chat = document.getElementById('aicoach-chat');
+          chat.innerHTML = '';
+          addChatBubble('assistant', "Hi! I'm your AI fitness coach. Ask me anything about your workouts, nutrition, sleep, or hydration. I have your latest data ready.");
+          document.getElementById('aicoach-input').value = '';
+          document.getElementById('aicoach-input').disabled = false;
+          document.getElementById('aicoach-send').disabled = false;
+          document.getElementById('aicoach-typing').style.display = 'none';
+          document.getElementById('aicoach-input').focus();
+          loadCoachChatList();
+          showToast('Started a new conversation.', 'success');
+        })
+        .catch(function() {
+          showToast('Failed to create new chat.', 'error');
+        });
+    }
+
+    // Close AI Coach modal on overlay click
+    document.addEventListener('click', function(e) {
+      var overlay = document.getElementById('aicoach-modal');
+      if (e.target === overlay) {
+        closeAICoach();
+      }
+    });
+
+    function sendCoachMessage() {
+      var input = document.getElementById('aicoach-input');
+      var text = input.value.trim();
+      if (!text) return;
+
+      var username = sessionStorage.getItem('fitness_username');
+      if (!username) {
+        showToast('Please sign in first.', 'error');
+        return;
+      }
+
+      // Auto-create a chat if none is active yet
+      var sendInternal = function() {
+        addChatBubble('user', text);
+        input.value = '';
+        input.disabled = true;
+        document.getElementById('aicoach-send').disabled = true;
+        document.getElementById('aicoach-typing').style.display = 'block';
+
+        // Save user message to backend
+        fetch(API_BASE + '/api/ai-coach/chats/' + currentChatId + '/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ role: 'user', text: text })
+        }).catch(function() {});
+
+        // Auto-generate title from first user message
+        if (coachHistory.length === 0) {
+          var title = text.length > 40 ? text.substring(0, 40) + '…' : text;
+          fetch(API_BASE + '/api/ai-coach/chats/' + currentChatId + '/title', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title: title })
+          }).catch(function() {});
+        }
+
+        fetch(API_BASE + '/api/ai-coach/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: username, message: text, history: coachHistory })
+        })
+          .then(function(r) { return r.json(); })
+          .then(function(data) {
+            input.disabled = false;
+            document.getElementById('aicoach-send').disabled = false;
+            document.getElementById('aicoach-typing').style.display = 'none';
+            if (data.detail) {
+              addChatBubble('assistant', 'Error: ' + data.detail);
+            } else {
+              addChatBubble('assistant', data.response);
+              coachHistory.push({ role: 'user', text: text });
+              coachHistory.push({ role: 'assistant', text: data.response });
+              // Save assistant response to backend
+              fetch(API_BASE + '/api/ai-coach/chats/' + currentChatId + '/messages', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ role: 'assistant', text: data.response })
+              }).catch(function() {});
+              // Refresh sidebar to show updated title/preview
+              loadCoachChatList();
+            }
+            input.focus();
+          })
+          .catch(function() {
+            input.disabled = false;
+            document.getElementById('aicoach-send').disabled = false;
+            document.getElementById('aicoach-typing').style.display = 'none';
+            addChatBubble('assistant', 'Cannot connect to server. Make sure the backend is running on port 8000.');
+            input.focus();
+          });
+      };
+
+      if (currentChatId === null) {
+        // Create a new chat first
+        fetch(API_BASE + '/api/ai-coach/chats', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: username })
+        })
+          .then(function(r) { return r.json(); })
+          .then(function(data) {
+            currentChatId = data.chat_id;
+            sendInternal();
+          })
+          .catch(function() {
+            showToast('Failed to create chat session.', 'error');
+          });
+      } else {
+        sendInternal();
+      }
+    }
+
+    // --- Sign Out ---
+    function handleSignOut() {
+      sessionStorage.removeItem('fitness_username');
+      coachHistory = [];
+      currentChatId = null;  // clear AI coach history on logout
+      updateAuthUI();
+      loadExerciseStats();
+      loadExerciseCharts();
+      loadTrackerTotals();
+      initCalendar();
+      closeModal('signin');
+      closeModal('signup');
+      showToast('You have been signed out.', 'success');
+    }
+
+    // --- Profile Modal ---
+    function openProfileModal() {
+      var username = sessionStorage.getItem('fitness_username');
+      if (!username) {
+        showToast('Please sign in first.', 'error');
+        return;
+      }
+      document.getElementById('profile-username').value = username;
+      document.getElementById('profile-bmi-result').textContent = '';
+      document.getElementById('profile-ideal-result').textContent = '';
+      document.getElementById('profile-metrics').style.display = 'none';
+      setProfileError('');
+
+      // Fetch existing profile data
+      fetch(API_BASE + '/api/profile/' + encodeURIComponent(username))
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          var p = data.profile;
+          if (p) {
+            if (p.age) document.getElementById('profile-age').value = p.age;
+            if (p.height_cm) document.getElementById('profile-height').value = p.height_cm;
+            if (p.weight_kg) document.getElementById('profile-weight').value = p.weight_kg;
+            if (p.gender) document.getElementById('profile-gender').value = p.gender;
+            if (p.target_weight_kg) document.getElementById('profile-target').value = p.target_weight_kg;
+            if (p.daily_calorie_goal) document.getElementById('profile-calgoal').value = p.daily_calorie_goal;
+            if (p.bmi) {
+              document.getElementById('profile-metrics').style.display = 'flex';
+              document.getElementById('profile-bmi-value').textContent = p.bmi;
+              document.getElementById('profile-ideal-range').textContent = p.ideal_weight_min + ' - ' + p.ideal_weight_max + ' kg';
+            }
+          }
+        })
+        .catch(function() {
+          // Profile may not exist yet
+        });
+
+      document.getElementById('profile-modal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProfileModal() {
+      document.getElementById('profile-modal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function setProfileError(msg) {
+      var el = document.getElementById('profile-error');
+      el.textContent = msg;
+      el.className = 'form-error' + (msg ? ' visible' : '');
+    }
+
+    function setProfileLoading(loading) {
+      var btn = document.querySelector('#profile-form button[type="submit"]');
+      var spinner = document.getElementById('profile-spinner');
+      var text = document.getElementById('profile-btn-text');
+      btn.disabled = loading;
+      spinner.style.display = loading ? 'inline-block' : 'none';
+      text.textContent = loading ? 'Saving...' : 'Save Profile';
+    }
+
+    function calculateProfileBMI() {
+      var age = parseInt(document.getElementById('profile-age').value);
+      var height = parseFloat(document.getElementById('profile-height').value);
+      var weight = parseFloat(document.getElementById('profile-weight').value);
+
+      if (!age || !height || !weight) {
+        setProfileError('Please fill in age, height, and weight first.');
+        return;
+      }
+      if (age <= 0 || height <= 0 || weight <= 0) {
+        setProfileError('All values must be positive.');
+        return;
+      }
+      setProfileError('');
+
+      var heightM = height / 100;
+      var bmi = weight / (heightM * heightM);
+      var bmiMin, bmiMax;
+      if (age >= 65) { bmiMin = 22; bmiMax = 27; }
+      else if (age < 18) { bmiMin = 18.5; bmiMax = 24; }
+      else { bmiMin = 18.5; bmiMax = 24.9; }
+
+      var idealMin = bmiMin * (heightM * heightM);
+      var idealMax = bmiMax * (heightM * heightM);
+
+      document.getElementById('profile-metrics').style.display = 'flex';
+      document.getElementById('profile-bmi-value').textContent = bmi.toFixed(2);
+      document.getElementById('profile-ideal-range').textContent = idealMin.toFixed(2) + ' - ' + idealMax.toFixed(2) + ' kg';
+      document.getElementById('profile-bmi-result').textContent = 'BMI: ' + bmi.toFixed(2);
+      document.getElementById('profile-ideal-result').textContent = 'Ideal weight range (age + height): ' + idealMin.toFixed(2) + ' kg - ' + idealMax.toFixed(2) + ' kg';
+    }
+
+    function saveProfile(event) {
+      event.preventDefault();
+      setProfileError('');
+
+      var username = sessionStorage.getItem('fitness_username');
+      if (!username) {
+        setProfileError('You must be signed in.');
+        return false;
+      }
+
+      var age = parseInt(document.getElementById('profile-age').value);
+      var height = parseFloat(document.getElementById('profile-height').value);
+      var weight = parseFloat(document.getElementById('profile-weight').value);
+      var gender = document.getElementById('profile-gender').value;
+      var target = parseFloat(document.getElementById('profile-target').value);
+      var calGoal = parseFloat(document.getElementById('profile-calgoal').value) || 2000;
+
+      if (!age || !height || !weight) {
+        setProfileError('Please fill in age, height, and weight.');
+        return false;
+      }
+      if (!gender) {
+        setProfileError('Please select your gender.');
+        return false;
+      }
+      if (!target || target <= 0) {
+        setProfileError('Please enter a valid target weight.');
+        return false;
+      }
+
+      setProfileLoading(true);
+
+      fetch(API_BASE + '/api/profile/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: username,
+          age: age,
+          height_cm: height,
+          weight_kg: weight,
+          gender: gender,
+          target_weight_kg: target,
+          daily_calorie_goal: calGoal
+        })
+      })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.detail) {
+            setProfileError(data.detail);
+            setProfileLoading(false);
+            return;
+          }
+          if (data.profile && data.profile.bmi) {
+            document.getElementById('profile-metrics').style.display = 'flex';
+            document.getElementById('profile-bmi-value').textContent = data.profile.bmi;
+            document.getElementById('profile-ideal-range').textContent = data.profile.ideal_weight_min + ' - ' + data.profile.ideal_weight_max + ' kg';
+            document.getElementById('profile-bmi-result').textContent = 'BMI: ' + data.profile.bmi;
+            document.getElementById('profile-ideal-result').textContent = 'Ideal weight range: ' + data.profile.ideal_weight_min + ' - ' + data.profile.ideal_weight_max + ' kg';
+          }
+          setProfileLoading(false);
+          showToast('Profile saved successfully!', 'success');
+        })
+        .catch(function() {
+          setProfileError('Cannot connect to server.');
+          setProfileLoading(false);
+        });
+
+      return false;
+    }
+
+    // Close profile modal on overlay click
+    document.addEventListener('click', function(e) {
+      var overlay = document.getElementById('profile-modal');
+      if (e.target === overlay) {
+        closeProfileModal();
+      }
+    });
+
+    // --- Sign In ---
+    async function handleSignIn(event) {
+      event.preventDefault();
+      setError('signin', '');
+
+      const username = document.getElementById('signin-username').value.trim();
+      const password = document.getElementById('signin-password').value;
+
+      if (!username) { setError('signin', 'Please enter your username.'); return false; }
+      if (!password) { setError('signin', 'Please enter your password.'); return false; }
+
+      setLoading('signin', true);
+
+      try {
+        const res = await fetch(API_BASE + '/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          setError('signin', data.detail || 'Login failed.');
+          setLoading('signin', false);
+          return false;
+        }
+
+        closeModal('signin');
+        sessionStorage.setItem('fitness_username', data.username);
+        updateAuthUI();
+        loadExerciseStats();
+        loadExerciseCharts();
+          loadTrackerTotals();
+        initCalendar();
+        showToast('Welcome back, ' + data.username + '!', 'success');
+        document.getElementById('signin-form').reset();
+      } catch (err) {
+        setError('signin', 'Cannot connect to server. Make sure the backend is running on port 8000.');
+      }
+      setLoading('signin', false);
+      return false;
+    }
+
+    // --- Sign Up ---
+    async function handleSignUp(event) {
+      event.preventDefault();
+      setError('signup', '');
+
+      const username = document.getElementById('signup-username').value.trim();
+      const password = document.getElementById('signup-password').value;
+      const confirm = document.getElementById('signup-confirm').value;
+
+      if (!username) { setError('signup', 'Please choose a username.'); return false; }
+      if (!password) { setError('signup', 'Please enter a password.'); return false; }
+      if (password !== confirm) { setError('signup', 'Passwords do not match.'); return false; }
+
+      setLoading('signup', true);
+
+      try {
+        const res = await fetch(API_BASE + '/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password, confirm_password: confirm })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          setError('signup', data.detail || 'Registration failed.');
+          setLoading('signup', false);
+          return false;
+        }
+
+        closeModal('signup');
+
+        // Auto-login and force profile setup
+        sessionStorage.setItem('fitness_username', username);
+        updateAuthUI();
+        loadExerciseStats();
+        loadExerciseCharts();
+        loadTrackerTotals();
+        initCalendar();
+        // Open profile modal so user fills in personal info immediately
+        setTimeout(function() { openProfileModal(); }, 400);
+        showToast('Account created! Please fill in your profile details.', 'success');
+
+        document.getElementById('signup-form').reset();
+        // Clear password rules
+        document.querySelectorAll('.rule').forEach(r => r.classList.remove('met'));
+      } catch (err) {
+        setError('signup', 'Cannot connect to server. Make sure the backend is running on port 8000.');
+      }
+      setLoading('signup', false);
+      return false;
+    }
+
+    // --- Calendar ---
+    var calCurrentYear = 0;
+    var calCurrentMonth = 0;
+    var calData = {};
+    var calFetchId = 0;
+
+    function renderCalendar(year, month) {
+      var grid = document.getElementById('cal-grid');
+      var header = document.getElementById('cal-month-year');
+      if (!grid) return;
+
+      // Safety: validate month/year
+      if (!month || !year || month < 1 || month > 12) {
+        var d = new Date();
+        year = d.getFullYear();
+        month = d.getMonth() + 1;
+        calCurrentYear = year;
+        calCurrentMonth = month;
+      }
+
+      var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      if (header) header.textContent = months[month - 1] + ' ' + year;
+
+      var firstDay = new Date(year, month - 1, 1).getDay();
+      var daysInMonth = new Date(year, month, 0).getDate();
+      var daysInPrev = new Date(year, month - 1, 0).getDate();
+
+      var now = new Date();
+      var todayStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+
+      var html = '';
+
+      // Previous month days (greyed out)
+      for (var i = firstDay - 1; i >= 0; i--) {
+        html += '<div class="cal-day other-month">' + (daysInPrev - i) + '</div>';
+      }
+
+      // Current month days
+      for (var day = 1; day <= daysInMonth; day++) {
+        var dateStr = year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+        var isToday = dateStr === todayStr ? ' today' : '';
+        var dayData = calData[dateStr];
+        var indicator = '';
+        if (dayData) {
+          if (dayData.goal_met && dayData.exercised) {
+            indicator = '<div class="cal-day-indicator green"></div>';
+          } else if (dayData.exercised) {
+            indicator = '<div class="cal-day-indicator blue"></div>';
+          } else if (dayData.calories > 0) {
+            indicator = '<div class="cal-day-indicator orange"></div>';
+          }
+        }
+        html += '<div class="cal-day' + isToday + '">' + day + indicator + '</div>';
+      }
+
+      // Fill remaining cells to complete the last row
+      var totalCells = firstDay + daysInMonth;
+      var remainder = (7 - (totalCells % 7)) % 7;
+      for (var i = 1; i <= remainder; i++) {
+        html += '<div class="cal-day other-month">' + i + '</div>';
+      }
+
+      grid.innerHTML = html;
+    }
+
+    function changeMonth(delta) {
+      calCurrentMonth += delta;
+      if (calCurrentMonth > 12) { calCurrentMonth = 1; calCurrentYear++; }
+      if (calCurrentMonth < 1) { calCurrentMonth = 12; calCurrentYear--; }
+      loadMonthlyData(calCurrentYear, calCurrentMonth);
+    }
+
+    function loadMonthlyData(year, month) {
+      // Clear data and render immediately (no stale data from previous month)
+      calData = {};
+      renderCalendar(year, month);
+
+      var username = sessionStorage.getItem('fitness_username');
+      if (!username) return;
+
+      // Track this request to ignore stale responses
+      var thisFetchId = ++calFetchId;
+
+      fetch(API_BASE + '/api/monthly-stats/' + encodeURIComponent(username) + '?year=' + year + '&month=' + month)
+        .then(function(r) {
+          if (!r.ok) throw new Error('fetch failed');
+          return r.json();
+        })
+        .then(function(data) {
+          if (thisFetchId !== calFetchId) return; // stale response, ignore
+          calData = data.days || {};
+          renderCalendar(year, month);
+        })
+        .catch(function() {
+          if (thisFetchId !== calFetchId) return;
+          calData = {};
+          renderCalendar(year, month);
+        });
+    }
+
+    function initCalendar() {
+      var now = new Date();
+      calCurrentYear = now.getFullYear();
+      calCurrentMonth = now.getMonth() + 1;
+      loadMonthlyData(calCurrentYear, calCurrentMonth);
+    }
+
+    // --- Tracker Functions ---
+    function launchTrackerApp(type) {
+      var username = sessionStorage.getItem('fitness_username');
+      if (!username) {
+        showToast('Please sign in first to launch a tracker.', 'error');
+        openModal('signin');
+        return;
+      }
+      var endpoint = type === 'calorie' ? '/api/launch-calorie'
+                   : type === 'sleep' ? '/api/launch-sleep'
+                   : type === 'water' ? '/api/launch-water'
+                   : '/api/launch-step';
+      var names = {calorie: 'Calorie tracker', sleep: 'Sleep tracker', water: 'Water tracker', step: 'Step tracker'};
+      fetch(API_BASE + endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username })
+      })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.detail) {
+            showToast(data.detail, 'error');
+          } else {
+            showToast(names[type] + ' launched! Check the new window.', 'success');
+          }
+        })
+        .catch(function() {
+          showToast('Cannot connect to server. Make sure the backend is running.', 'error');
+        });
+    }
+
+    function loadTrackerTotals() {
+      var username = sessionStorage.getItem('fitness_username');
+      // Reset all
+      ['calorie', 'sleep', 'water', 'step'].forEach(function(t) {
+        var valEl = document.getElementById('tracker-today-value-' + t);
+        var card = document.getElementById('tracker-today-' + t);
+        if (valEl) {
+          var units = {calorie: 'kcal', sleep: 'hrs', water: 'ml', step: 'steps'};
+          valEl.innerHTML = '0 <span class="unit">' + units[t] + '</span>';
+        }
+        if (card) card.classList.add('empty');
+      });
+      var calCard = document.getElementById('calorie-summary');
+      if (calCard) calCard.style.display = 'none';
+      if (!username) return;
+
+      fetch(API_BASE + '/api/daily-summary/' + encodeURIComponent(username))
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.calories !== undefined) {
+            var el = document.getElementById('tracker-today-value-calorie');
+            var card = document.getElementById('tracker-today-calorie');
+            if (el) el.innerHTML = data.calories + ' <span class="unit">kcal</span>';
+            if (card) card.classList.toggle('empty', data.calories === 0);
+          }
+          if (data.sleep_hours !== undefined) {
+            var el = document.getElementById('tracker-today-value-sleep');
+            var card = document.getElementById('tracker-today-sleep');
+            if (el) el.innerHTML = data.sleep_hours + ' <span class="unit">hrs</span>';
+            if (card) card.classList.toggle('empty', data.sleep_hours === 0);
+          }
+          if (data.water_ml !== undefined) {
+            var el = document.getElementById('tracker-today-value-water');
+            var card = document.getElementById('tracker-today-water');
+            if (el) el.innerHTML = data.water_ml + ' <span class="unit">ml</span>';
+            if (card) card.classList.toggle('empty', data.water_ml === 0);
+          }
+          if (data.steps !== undefined) {
+            var el = document.getElementById('tracker-today-value-step');
+            var card = document.getElementById('tracker-today-step');
+            if (el) el.innerHTML = data.steps + ' <span class="unit">steps</span>';
+            if (card) card.classList.toggle('empty', data.steps === 0);
+          }
+
+          // Calorie Summary
+          var calCard = document.getElementById('calorie-summary');
+          if (data.calories !== undefined) {
+            calCard.style.display = 'block';
+            var consumed = data.calories || 0;
+            var burned = (data.exercise_kcal || 0) + (data.step_calories || 0) + (data.bmr_kcal || 0);
+            var net = consumed - burned;
+
+            document.getElementById('cal-in-value').textContent = consumed;
+            document.getElementById('cal-out-value').textContent = burned.toFixed(1);
+            document.getElementById('cal-net-value').textContent = net.toFixed(1);
+
+            var netEl = document.querySelector('#cal-net-value');
+            if (netEl) {
+              netEl.classList.toggle('negative', net < 0);
+            }
+
+            document.getElementById('cal-bmr-value').textContent = (data.bmr_kcal || 0).toFixed(1);
+            document.getElementById('cal-exercise-value').textContent = (data.exercise_kcal || 0).toFixed(1);
+            document.getElementById('cal-steps-value').textContent = (data.step_calories || 0).toFixed(1);
+          }
+        })
+        .catch(function() {});
+    }
+
+    // --- Step Quick-Add (removed) ---
+
+
+    // --- Music Player ---
+    var musicPlaying = false;
+    function toggleMusic() {
+      var audio = document.getElementById('bg-music');
+      var btn = document.getElementById('mp-btn');
+      if (!audio || !btn) return;
+      if (musicPlaying) {
+        audio.pause();
+        btn.classList.remove('playing');
+        btn.innerHTML = '&#9654;';
+        btn.setAttribute('title', 'Play');
+        musicPlaying = false;
+      } else {
+        audio.play().then(function() {
+          btn.classList.add('playing');
+          btn.innerHTML = '&#9646;&#9646;';
+          btn.setAttribute('title', 'Pause');
+          musicPlaying = true;
+        }).catch(function() {
+          showToast('Could not play music. Try clicking again.', 'error');
+        });
+      }
+    }
+    function setVolume(val) {
+      var audio = document.getElementById('bg-music');
+      if (audio) audio.volume = val / 100;
+    }
+    document.getElementById('bg-music').addEventListener('error', function() {
+      var player = document.getElementById('music-player');
+      if (player) player.style.display = 'none';
+    });
+
+    (function() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+      // Initialize auth UI and exercise stats on page load
+      updateAuthUI();
+      loadExerciseStats();
+      loadExerciseCharts();
+      loadTrackerTotals();
+      initCalendar();
+
+      // Mobile hamburger menu toggle
+      const hamburger = document.querySelector('.nav-hamburger');
+      const navLinks = document.querySelector('.global-nav-links');
+      if (hamburger && navLinks) {
+        hamburger.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const isOpen = navLinks.style.display === 'flex';
+          navLinks.style.display = isOpen ? '' : 'flex';
+          if (!isOpen) {
+            navLinks.style.position = 'fixed';
+            navLinks.style.top = '44px';
+            navLinks.style.left = '0';
+            navLinks.style.right = '0';
+            navLinks.style.background = '#000';
+            navLinks.style.flexDirection = 'column';
+            navLinks.style.padding = '16px 24px';
+            navLinks.style.gap = '16px';
+            navLinks.style.alignItems = 'flex-start';
+            navLinks.style.zIndex = '200';
+          }
+        });
+        navLinks.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => { navLinks.style.display = ''; });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

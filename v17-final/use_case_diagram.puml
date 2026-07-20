@@ -1,0 +1,97 @@
+@startuml
+!theme plain
+left to right direction
+skinparam packageStyle rectangle
+skinparam usecase {
+  BorderColor #1a2233
+  BackgroundColor #f4f7ff
+  FontColor #1a2233
+}
+skinparam actor {
+  BorderColor #1a2233
+  BackgroundColor #2997ff
+  FontColor #ffffff
+}
+skinparam rectangle {
+  BorderColor #24314a
+  BackgroundColor #f0f3fa
+  FontColor #1a2233
+  FontStyle bold
+}
+
+actor "User" as U
+actor "Webcam" as Cam
+actor "Ollama (Local LLM)" as LLM
+actor "USDA / Open Food Facts" as FoodAPI
+
+rectangle "AI Fitness Trainer" {
+
+  usecase (Register) as UC1
+  usecase (Login) as UC2
+  usecase (Manage Profile\nage / height / weight\nBMI / gender / target) as UC3
+
+  usecase (Perform Push-up) as UC4
+  usecase (Perform Squat) as UC5
+  usecase (Perform Plank) as UC6
+  usecase (Perform Sit-up) as UC7
+  usecase (Perform March in Place) as UC8
+  usecase (Perform Arm Raise) as UC9
+  usecase (Perform Jump) as UC10
+  usecase (View Exercise Logs) as UC11
+
+  usecase (Log Food & Calories) as UC12
+  usecase (Log Sleep Hours) as UC13
+  usecase (Log Water Intake) as UC14
+  usecase (Log Steps) as UC15
+
+  usecase (View AI Coach Report) as UC16
+  usecase (Chat with AI Coach) as UC17
+
+  usecase (View Daily Summary) as UC18
+  usecase (View Monthly Statistics) as UC19
+  usecase (Launch Desktop App\nfrom Web Browser) as UC20
+}
+
+U --> UC1
+U --> UC2
+U --> UC3
+U --> UC4
+U --> UC5
+U --> UC6
+U --> UC7
+U --> UC8
+U --> UC9
+U --> UC10
+U --> UC11
+U --> UC12
+U --> UC13
+U --> UC14
+U --> UC15
+U --> UC16
+U --> UC17
+U --> UC18
+U --> UC19
+U --> UC20
+
+UC4 --> Cam : real-time pose
+UC5 --> Cam
+UC6 --> Cam
+UC7 --> Cam
+UC8 --> Cam
+UC9 --> Cam
+UC10 --> Cam
+
+UC12 --> FoodAPI : lookup kcal/100g
+UC17 --> LLM : personalized advice
+
+note right of UC16
+  Rule-based analysis of all
+  user data (WHO guidelines)
+end note
+
+note bottom of UC20
+  Web UI launches Tkinter
+  desktop apps as subprocesses
+end note
+
+@enduml
